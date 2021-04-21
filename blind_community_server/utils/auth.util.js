@@ -16,9 +16,7 @@ module.exports = {
     return token;
   },
   verifyToken: (token) => {
-    console.log(token);
     const result = jwt.verify(token, process.env.ACCESS_SECRET_KEY);
-    console.log(result);
     return result;
   },
 

@@ -2,7 +2,7 @@
 const morgan = require('morgan');
 const express = require('express');
 // const bodyParser = require('body-parser');
-// const cors = require('cors');
+const cors = require('cors');
 
 // const cookieParser = require('cookie-parser');
 const { database, errorHandler } = require("./middlewares/modules");
@@ -10,7 +10,7 @@ const { database, errorHandler } = require("./middlewares/modules");
 const app = express();
 
 
-// app.use(cors({ credentials: true, origin: true }));
+app.use(cors({ credentials: true, origin: true }));
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -26,7 +26,7 @@ app.use(morgan(`:date[iso][:status][:method] :url :response-time ms :res[content
 // app.post("/board/upload", upload.array('docs'));
 
 // app.get('/test', require('./routes/test.routes'));
-app.use('/test', require('./routes/auth.routes'));
+app.use('/auth', require('./routes/auth.routes'));
 
 app.use(({ }, { err }, next) => {
   next(err.NotFound('요청하신 페이지를 찾을 수 없습니다.'));
@@ -34,7 +34,6 @@ app.use(({ }, { err }, next) => {
 
 app.use((data, req, res, next) => {
   if (data instanceof Error) {
-    console.log(data);
     res.status(data.status || 500);
     return res.json(data);
   }

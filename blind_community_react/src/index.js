@@ -7,6 +7,9 @@ import { CookiesProvider } from 'react-cookie';
 
 import reportWebVitals from './reportWebVitals';
 
+import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/stable';
+
 ReactDOM.render(
 
   <Provider store={store}>

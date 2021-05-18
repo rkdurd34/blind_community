@@ -1,0 +1,9 @@
+.rc-pagination > li {
+  padding: 0 7px;
+  color: #41649c;
+  font-weight: 500;
+}
+
+.rc-pagination > li:hover {
+  font-weight: bold;
+}

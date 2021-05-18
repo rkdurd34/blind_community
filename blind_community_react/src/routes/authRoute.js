@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
-function AuthRoute({ component: Component, render, ...rest }) {
+function AuthRoute({ component: Component, render, history, ...rest }) {
 
   const [cookies] = useCookies('accessToken');
   const authenticated = (cookies.accessToken) ? true : false;
-
+  console.log(rest);
   return (
     <Route
       {...rest}

@@ -4,9 +4,9 @@ const express = require('express');
 // const bodyParser = require('body-parser');
 const cors = require('cors');
 
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const { database, errorHandler } = require("./middlewares/modules");
-// const multer = require('multer');
+
 const app = express();
 
 
@@ -14,10 +14,10 @@ app.use(cors({ credentials: true, origin: true }));
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser());
+app.use(cookieParser());
 // app.use(express.static("media"));
 // require('dayjs/locale/ko');
-app.use(database, errorHandler);
+app.use(database(), errorHandler());
 dayjs = require('dayjs');
 dayjs.locale('ko');
 morgan.token('date', () => dayjs().format("YYYY-MM-DD HH:mm:ss"));
@@ -26,14 +26,20 @@ app.use(morgan(`:date[iso][:status][:method] :url :response-time ms :res[content
 // app.post("/board/upload", upload.array('docs'));
 
 // app.get('/test', require('./routes/test.routes'));
-app.use('/auth', require('./routes/auth.routes'));
 
-app.use(({ }, { err }, next) => {
+
+
+app.use('/auth', require('./routes/auth.routes'));
+app.use('/board', require('./routes/board.routes'));
+app.use('/mypage', require('./routes/mypage.routes'));
+
+app.use((req, { err }, next) => {
   next(err.NotFound('요청하신 페이지를 찾을 수 없습니다.'));
 });
 
 app.use((data, req, res, next) => {
   if (data instanceof Error) {
+    console.log(data);
     res.status(data.status || 500);
     return res.json(data);
   }

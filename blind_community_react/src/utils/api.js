@@ -1,15 +1,19 @@
 import axios from "axios";
-
+import Cookies from 'js-cookie';
+import { useHistory } from 'react-router-dom';
 
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
+
 const isError = err => {
+  // console.log(err.response);
   if (err.response) {
     if (err.response.data instanceof Blob === true) {
-      alert(" Excel Download - 해당 API가 존재하지 않습니다.");
+      alert(" Download - 해당 API가 존재하지 않습니다.");
     } else if (err.response.status === 401) {
       alert("로그인 만료");
-
+      Cookies.remove('accessToken');
+      window.location.reload();
     } else {
       console.log(
         "요청이 이루어졌으나 서버가 2xx 범위를 벗어나는 상태 코드로 응답함."
@@ -32,7 +36,29 @@ const isError = err => {
     console.log("Error: ", err.message);
   }
 };
+
+
+
+
 export default {
+  customAPI: (
+    method,
+    url,
+    cb = () => { },
+    { params = {}, data = {}, headers = {}, responseType = "json" }
+  ) => {
+    return axios({
+      method,
+      url,
+      params,
+      data,
+      headers,
+      responseType
+    })
+      .then((result) => cb(result.data))
+      .catch((err) => isError(err));
+  },
+
   signin: async (data, cb) => {
     let status = await axios.post('/auth/signin', data)
       .then(result => cb())
@@ -47,9 +73,85 @@ export default {
         isError(err);
       });
   },
+  // 43800
+
+  // 46600
+  // 2800 
+  // 1120 - 45000
+  // 1400 - 45200
+  // 1680 -  45400
+
   signout: async (data, cb) => {
-    const status = await axios.delete('/auth/signout', data)
+    const status = await axios.delete('/auth/signout')
       .then(result => cb())
       .catch(err => isError(err));
-  }
+  },
+  typeDataFirst: async (cb) => {
+    const status = await axios.get('/auth/signup/type/first')
+      .then(result => cb(result))
+      .catch(err => {
+        isError(err);
+      });
+  },
+  typeDataSecond: async (region_1_no, cb) => {
+    const status = await axios.get(`/auth/signup/type/second?region_1_no=${region_1_no}`)
+      .then(result => cb(result))
+      .catch(err => {
+        isError(err);
+      });
+  },
+  typeDataThird: async (region_2_no, cb) => {
+    const status = await axios.get(`/auth/signup/type/third?region_2_no=${region_2_no}`)
+      .then(result => cb(result))
+      .catch(err => {
+        isError(err);
+      });
+  },
+  mainPage: async (post_type, cb) => {
+    const status = await axios.get(`/board/main?post_type=${post_type}`)
+      .then(result => cb(result.data))
+      .catch(err => {
+        isError(err);
+      });
+  },
+  postListAll: async (data, cb) => {
+    const status = await axios.get(`/board/all?post_type=${data.post_type}&page=${data.page}&count=${data.count}`)
+      .then(result => cb(result.data))
+      .catch(err => {
+        isError(err);
+      });
+  },
+  postDetail: async (data, cb) => {
+    console.log(data);
+    const status = await axios.get(`/board/post/detail?post_no=${data.post_no}`)
+      .then(result => { console.log(result.data); return cb(result.data); })
+      .catch(err => {
+        isError(err);
+      });
+  },
+  typeData: async (data, cb) => {
+    const status = await axios.get(`/board/type/data`)
+      .then(result => cb(result.data))
+      .catch(err => {
+        isError(err);
+      });
+  },
+  createPost: async (data, cb) => {
+    const status = await axios.post(`/board/post/create`, data)
+      .then(result => cb(result.data))
+      .catch(err => {
+        isError(err);
+      });
+  },
+  postLike: async (data, cb) => {
+    const status = await axios.post(`/board/post/like`, { post_no: data })
+      .then(result => cb(result.data))
+      .catch(err => isError(err));
+  },
+  createComment: async (data, cb) => {
+    const status = await axios.post(`/board/post/comment`, { post_no: data.post_no, comment: data.comment })
+      .then(result => cb(result.data))
+      .catch(err => isError(err));
+  },
+
 };

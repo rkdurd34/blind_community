@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const ButtonSection = styled.div`
   width:100%;
-  height:10%;
+  height:4rem;
   display:flex;
   flex-wrap:wrap;
 `;
@@ -56,6 +56,6 @@ const SaveBtn = styled.button`
   cursor: pointer;
 `;
 const pack = {
-  ButtonSection,Container,Content,BtnWrap,SaveBtn,Title
+  ButtonSection, Container, Content, BtnWrap, SaveBtn, Title
 };
 export default pack;

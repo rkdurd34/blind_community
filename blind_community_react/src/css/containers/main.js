@@ -11,15 +11,22 @@ const ListSection = styled.div`
 `;
 const PostTitle = styled.div`
   height: 45px;
-  background: #f8f9fa;
+  /* background: #f8f9fa; */
+  background-color: white;
   padding: 10px;
-  padding-left: 15px;
+  padding-left: 0px;
   padding-top: 15px;
-  font-size: 15px;
+  /* font-size: 1.2rem; */
   font-weight: bold;
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
+  span:nth-child(1){
+    font-size:20px !important;
+      }
+  span:nth-child(2){
+    font-size:0.8rem;
+  }
 `;
 const PostList = styled.div`
 /* a:link {
@@ -32,7 +39,21 @@ const PostList = styled.div`
 
 `;
 
+const SVG = styled.div`
+  padding: 3px;
+  padding-left:0px;
+  svg {
+    /* color: ${(props) => props.clicked ? `#fff` : `#5c3ec2`}; */
+    color: red;
+    font-size: 20px !important ;
+    width:10px !important ;
+  }
+  span{
+    font-size:20px !important;
+  }
+  
+`;
 const pack = {
-  ButtonSection, ListSection, PostTitle, PostList
+  ButtonSection, ListSection, PostTitle, PostList, SVG
 };
 export default pack;

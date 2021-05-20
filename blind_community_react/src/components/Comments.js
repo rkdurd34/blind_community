@@ -1,75 +1,87 @@
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
 import { List, Avatar, Button, Skeleton } from 'antd';
-import api from '../utils/api'
-import pack from '../css/containers/postdetail'
+import api from '../utils/api';
+import pack from '../css/containers/postdetail';
 // import reqwest from 'reqwest';
 
 const count = 3;
 const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat&noinfo`;
 
 
-const  Comments = ({ list, handleMoreButton }) =>{
-  const post_no = 1
-  const [loading,setLoading] = useState(false)
-  const [data,setData] = useState([])
+const Comments = ({ list, handleMoreButton, setCommentList }) => {
+  const post_no = 1;
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
   // const [list,setList] = useState([])
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   api.customAPI(
+  //     `get`,
+  //     `/board/post/detail`,
+  //     (data) => {
+  //       // setData(data.comments.map(item=>item.title= item.text));
+  //       // setList(data.comments.map(item=>({...item, title:item.text })));
+  //       // console.log(data)
+  //       setLoading(false);
+  //     },
+  //     { params: { post_no } }
+  //   );
+  // }, []);
+  const onLoadMore = () => {
+    setLoading(true);
+    handleMoreButton();
+    setLoading(false);
+  };
+  const handleDeleteBtn = (no) => {
     api.customAPI(
-      `get`,
-      `/board/post/detail`,
-      (data)=>{
-        // setData(data.comments.map(item=>item.title= item.text));
-        // setList(data.comments.map(item=>({...item, title:item.text })));
-        // console.log(data)
-        setLoading(false)
-        },
-      {params:{post_no}}
-    )
-  }, [])
-  const onLoadMore =() =>{
-    setLoading(true)
-    handleMoreButton()
-    setLoading(false)
-  }
+      `delete`,
+      `/board/comment/delete`,
+      (data) => {
+        setCommentList(list.filter((comment) => comment.no != no));
+      },
+      { params: { comment_no: no } }
+    );
+
+  };
   const loadMore =
-      !loading ? (
-       <pack.MoreWrap>
-          <Button onClick={onLoadMore}>더보기</Button>
-        </pack.MoreWrap>
-      ) : null;
+    !loading ? (
+      <pack.MoreWrap>
+        <Button onClick={onLoadMore}>더보기</Button>
+      </pack.MoreWrap>
+    ) : null;
   return (
     <List
-        className="demo-loadmore-list"
-        loading={loading}
-        itemLayout="horizontal"
-        loadMore={loadMore}
-        dataSource={list}
-        renderItem={item => {
-          // console.log(item)
-          return(
+      className="demo-loadmore-list"
+      loading={loading}
+      itemLayout="horizontal"
+      loadMore={loadMore}
+      dataSource={list}
+      renderItem={item => {
+        return (
           <List.Item
             actions={[
-            <a key="list-loadmore-edit" >삭제</a>,
-             <a key="list-loadmore-more">more</a>
-             ]}
+              <a key="list-loadmore-edit" onClick={() => handleDeleteBtn(item.no)} >삭제</a>,
+              // <a key="list-loadmore-more">more</a>
+            ]}
           >
             <Skeleton avatar title={false} loading={item.loading} active>
               <List.Item.Meta
                 avatar={
                   <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                 }
-                title={<a href="https://ant.design">{item.text}</a>}
+                title={<spin>{item.text}</spin>}
                 description={item.create_datetime}
               />
-              <div>content</div>
+              {/* <div>content</div> */}
             </Skeleton>
           </List.Item>
-        )}}
-      />
-  )
-}
-export default Comments
+        );
+      }}
+    />
+  );
+};
+
+export default Comments;;
 // class LoadMoreList extends React.Component {
 //   state = {
 //     initLoading: true,

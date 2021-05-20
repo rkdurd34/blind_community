@@ -24,6 +24,7 @@ import PublicRoute from './routes/publicRoute';
 
 import styled from 'styled-components'
 
+const BestPost = lazy(()=>import('./containers/BestPost'))
 const Main = lazy(()=> import('./containers/Main'))
 const Test=  lazy(()=>import('./containers/Test'))
 const SignIn = lazy(()=>import('./containers/SignIn'))
@@ -56,7 +57,7 @@ function App() {
         <AuthRoute exact path='/' component = {Main}/>
         <AuthRoute exact path='/board/all' component = {BoardAll}/>
         <AuthRoute exact path='/board/detail/:no' component = {PostDetail}/>
-        <AuthRoute exact path='/board/best' component = {Main}/>
+        <AuthRoute exact path='/board/best' component = {BestPost}/>
         <AuthRoute exact path='/board/create' component = {CreatePost}/>
         <AuthRoute exact path='/mypage' component = {MyPage}/>
         <AuthRoute exact path='/search' component = {Search}/>

@@ -77,7 +77,7 @@ const PostEdit = ({ location,history,match }) => {
       <pack.Container>
         <pack.ButtonSection>
              <TypeButton subTitle="내 지역" title ={editPost.region_type} picked ={ editPost.region_no!== null ? true : false}  />
-            <TypeButton subTitle="내 업종" title= {editPost.sector_type} picked = {editPost.sector_no!== null ? true : false} />
+            <TypeButton subTitle="내 업종" title= {editPost.sector_type} picked = {editPost.sector_no!== null ? true : false} disabled={true} />
         </pack.ButtonSection>
         <pack.Title 
             placeholder={`제목을 입력해주세요`} 

@@ -40,6 +40,7 @@ export default function SignUp2() {
         isLoading: loading.isLoading
 
     }),shallowEqual)
+    console.log(image)
     const setRegWorkKind = useCallback((workKind)=> {
         dispatch(authActions.setRegWorkKind({workKind}))
     },[dispatch])
@@ -181,7 +182,7 @@ if(email.length < 1 || password.length < 1) history.push('/signin')
                 />
           </pack.Region>
           <pack.Picture>
-            <FileUploader fileChangeHandler = { (e)=>  setImage(e.target.files[0])}/>
+            <FileUploader fileChangeHandler = { (e)=>  setImage(e.target.files[0])} fileName={image}/>
           </pack.Picture>
           <pack.Button>
             <button id={"enterButton"} className={'submitButton'} type="submit" onClick={handleSignUp} >회원가입</button>

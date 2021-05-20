@@ -2,7 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import { Record, List } from "immutable";
 import api from '../../utils/api';
 import create from '@ant-design/icons/lib/components/IconFont';
-
+import * as loadingActions from './loading';
 
 const SET_CURTYPE = "board/SET_CURTYPE";
 const SET_SECTOR = "board/SET_SECTOR";
@@ -22,7 +22,7 @@ const SET_MAIN_POST = `board/SET_MAIN_POST`;
 export const setCurType = createAction(SET_CURTYPE);
 export const setSector = createAction(SET_SECTOR);
 export const setRegion = createAction(SET_REGION);
-export const setMain = createAction(SET_MAIN_POST)
+export const setMain = createAction(SET_MAIN_POST);
 
 export const setPostList = createAction(SET_POST_LIST);
 export const setPostDetail = createAction(SET_POST_DETAIL);
@@ -43,7 +43,7 @@ export const boardAllPostListAll = () => async dispatch => {
 };
 export const searchPageData = (curPage, searchInput, setTotalPage) => async (dispatch, getState) => {
   try {
-    console.log('안와?');
+    dispatch(loadingActions.setLoading(true));
     const result = await api.customAPI(
       `get`,
       `/board/post/search`,
@@ -64,8 +64,10 @@ export const searchPageData = (curPage, searchInput, setTotalPage) => async (dis
         }
       }
     );
+
     console.log(getState().board.searchPost.totalCount);
     await setTotalPage(getState().board.searchPost.totalCount);
+    dispatch(loadingActions.setLoading(false));
   } catch (e) {
     throw (e);
   }
@@ -101,9 +103,9 @@ const initialState = Record({
     bname: ``,
 
   },
-  main:{
-    best:[],
-    all:[]
+  main: {
+    best: [],
+    all: []
   },
   postList: [],
   postDetail: {},
@@ -135,7 +137,7 @@ export default handleActions({
   [SET_CURTYPE]: (state, { payload }) => state.set('curType', payload.curType),
   [SET_SECTOR]: (state, { payload }) => state.set('sector', payload.sector),
   [SET_REGION]: (state, { payload }) => state.set('region', payload.region),
-  [SET_MAIN_POST] : (state,{payload}) => state.set('main', payload.main),
+  [SET_MAIN_POST]: (state, { payload }) => state.set('main', payload.main),
   [SET_POST_LIST]: (state, { payload }) => state.set('postList', payload.postList),
   [SET_POST_DETAIL]: (state, { payload }) => state.set('postDetail', payload.postDetail),
   [SET_COMMENT_LIST]: (state, { payload }) => { console.log(payload.commentList); return state.set('commentList', payload.commentList); },

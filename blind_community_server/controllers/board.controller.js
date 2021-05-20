@@ -1,6 +1,7 @@
 const { signToken, verifyToken } = require('../utils/auth.util');
 const qs = require('query-string');
 const dayjs = require('dayjs');
+const { post } = require('../routes/board.routes');
 
 const PAGINATION_COUNT = 10;
 const controller = {
@@ -77,7 +78,7 @@ const controller = {
       `, [
         user_no,
         post_type === "sector" ? sector_no : region_no,
-        dayjs().subtract(1, 'week').format('YYYY-MM-DD'),
+        dayjs().subtract(1, 'month').format('YYYY-MM-DD'),
         dayjs().format('YYYY-MM-DD'),
         5,
         0,
@@ -86,14 +87,15 @@ const controller = {
         0
       ]);
 
-      console.log(result[2][0]);
-      console.log(dayjs().subtract(1, 'day').format('YYYY-MM-DD'),
-        dayjs().format('YYYY-MM-DD'));
+      // console.log(result[2][0]);
+      // console.log(dayjs().subtract(1, 'day').format('YYYY-MM-DD'),
+      //   dayjs().format('YYYY-MM-DD'));
+      console.log(result[2].length);
       next({
         user_data: result[0][0],
         post_data: {
-          best: result[1],
-          all: result[2]
+          best: result[1].map((post) => ({ ...post, create_datetime: dayjs(post.create_datetime).format('YYYY-MM-DD HH:mm') })),
+          all: result[2].map((post) => ({ ...post, create_datetime: dayjs(post.create_datetime).format('YYYY-MM-DD HH:mm') }))
         }
       });
     } catch (e) {
@@ -158,7 +160,8 @@ const controller = {
       next({
         total_count: result[2][0].total_count,
         user_data: result[0][0],
-        post_data: result[1]
+        post_data: result[1].map((post) => ({ ...post, create_datetime: dayjs(post.create_datetime).format('YYYY-MM-DD HH:mm:ss') }))
+
       });
     } catch (e) {
       next(e);
@@ -180,12 +183,15 @@ const controller = {
         a.user_no,
         b.bname,
         a.no,
+        d.nickname,
         c.name
         FROM boards AS a
         LEFT JOIN region_4 AS b
         ON a.region_no = b.no
         LEFT JOIN sectors AS c
         ON a.sector_no = c.no 
+        LEFT JOIN users AS d
+        ON d.no = a.user_no
         WHERE
         a.no = ?;
 
@@ -233,9 +239,9 @@ const controller = {
           sector_type: result[4][0].name,
           can_edit: result[3][0].can_edit,
           liked: result[5][0].liked,
-          create_datetime: dayjs(result[0].create_datetime).format("MM/DD/YYYY")
+          create_datetime: dayjs(result[0].create_datetime).format("YYYY-MM-DD HH:mm:ss")
         },
-        comments: result[1].map(item => ({ ...item, create_datetime: dayjs(item.create_datetime).format('YYYY-MM-DD') })),
+        comments: result[1].map(item => ({ ...item, create_datetime: dayjs(item.create_datetime).format('YYYY-MM-DD HH:mm:ss') })),
         comments_count: result[2][0].count
 
       });
@@ -472,10 +478,99 @@ const controller = {
     try {
       const region_no = userData.region_no;
       const sector_no = userData.sector_no;
-
+      const user_no = userData.user_no;
+      const post_type = query.post_type;
+      const page = query.page;
+      const count = query.count === undefined ? PAGINATION_COUNT : query.count;
+      console.log(count, page, post_type);
       const [result] = await pool.query(`
+        SELECT * 
+        FROM users AS a
+        INNER JOIN sectors  AS b
+        ON a.sector_no = b.no
+        INNER JOIN region_4 AS c
+        ON a.region_no = c.no
+        WHERE
+        a.no = ?;
+        
+        SELECT 
+        a.no as post_no,
+        a.title,
+        a.content_text,
+        a.region_no,
+        a.sector_no,
+        a.views,
+        a.likes,
+        a.create_datetime,
+        b.email,
+        b.nickname,
+        CASE WHEN c.comment_counts IS NULL THEN 0 ELSE c.comment_counts END AS comment_counts
+        FROM boards AS a
+        INNER JOIN users AS b
+        ON a.user_no = b.no
+        LEFT JOIN  (SELECT post_no, COUNT(post_no) AS comment_counts FROM comments
+        GROUP BY post_no) AS C
+        ON c.post_no = a.no
+        WHERE 
+        ${post_type === "sector" ? `a.sector_no = ?` : `a.region_no = ? `}
+        AND a.enabled =1
+        AND b.enabled =1
+        AND DATE(a.create_datetime) BETWEEN ? AND ?
+        ORDER BY likes DESC, views DESC, c.comment_counts DESC
+        LIMIT ? OFFSET ?;
 
-      `);
+
+
+        SELECT 
+        COUNT(*) AS total_count
+        FROM boards AS a
+        INNER JOIN users AS b
+        ON a.user_no = b.no
+        LEFT JOIN  (SELECT post_no, COUNT(post_no) AS comment_counts FROM comments
+        GROUP BY post_no) AS C
+        ON c.post_no = a.no
+        WHERE 
+        ${post_type === "sector" ? `a.sector_no = ?` : `a.region_no = ? `}
+        AND a.enabled =1
+        AND b.enabled =1
+        AND DATE(a.create_datetime) BETWEEN ? AND ?
+        ORDER BY likes DESC, views DESC, c.comment_counts DESC
+
+        
+      `, [
+        user_no,
+        post_type === "sector" ? sector_no : region_no,
+        dayjs().subtract(1, 'month').format('YYYY-MM-DD'),
+        dayjs().format('YYYY-MM-DD'),
+        Number(count),
+        Number(page * count),
+        post_type === "sector" ? sector_no : region_no,
+        dayjs().subtract(1, 'month').format('YYYY-MM-DD'),
+        dayjs().format('YYYY-MM-DD'),
+
+      ]);
+
+      console.log(result[1].length);
+      // console.log(dayjs().subtract(1, 'day').format('YYYY-MM-DD'),
+      //   dayjs().format('YYYY-MM-DD'));
+      next({
+        user_data: result[0][0],
+        post_data: result[1].map((post) => ({ ...post, create_datetime: dayjs(post.create_datetime).format('YYYY-MM-DD HH:mm') })),
+        total_count: result[2][0].total_count
+      });
+    } catch (e) {
+      next(e);
+    }
+  },
+  deleteComment: async ({ userData, query }, { pool }, next) => {
+    try {
+      const comment_no = query.comment_no;
+      console.log(comment_no);
+      const [result] = await pool.query(`
+        DELETE FROM comments
+        WHERE no = ?
+      `, [comment_no]);
+      next('good');
     } catch (e) {
       next(e);
     }

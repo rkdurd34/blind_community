@@ -21,12 +21,12 @@ height:100%;
   
 }
 `;
-export default function FileUploader({ fileChangeHandler }) {
-  console.log()
+export default function FileUploader({ fileChangeHandler, fileName }) {
+  console.log();
   return (
     <Filebox>
       <label className="input-file-button" htmlFor="input-file">
-        (아이콘)사업자 등록증 사진 추가
+        {fileName === `` ? "(아이콘)사업자 등록증 사진 추가" : `이미지: ${fileName.name}`}
       </label>
       <input type="file" id="input-file" style={{ display: "none" }} onChange={fileChangeHandler} />
     </Filebox>
@@ -34,3 +34,6 @@ export default function FileUploader({ fileChangeHandler }) {
 
   );
 }
+FileUploader.defaultProps = {
+  fileName: ``
+};

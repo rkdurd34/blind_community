@@ -10,7 +10,7 @@ import TypeButton from '../components/TypeButton';
 
 import pack from '../css/containers/main';
 import Post from '../components/Post';
-
+import heartIcon from "../assets/svgs/heart.svg";
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
 import board, * as boardActions from '../store/modules/board'
 
@@ -80,8 +80,12 @@ export default function Main() {
             </pack.ButtonSection>
             <pack.ListSection>
                 <pack.PostTitle>
-                    <span>베스트 게시글</span>
-                    <span><Link to ="/board/all">{"<"}더 보기</Link></span>
+                    <pack.SVG>
+                        
+                        <span>베스트 게시글</span>
+                    </pack.SVG>
+                    
+                    <span><Link to ="/board/best">{"<"}더 보기</Link></span>
                     </pack.PostTitle>
                 <pack.PostList>
                     {main.best.map((post,index)=>

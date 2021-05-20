@@ -35,7 +35,10 @@ const PostTitle = styled.div`
 `;
 
 const ABDContainer = styled.div`
-  padding-bottom: 10px;
+  width:100%;
+    padding-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Author = styled.span`
@@ -66,6 +69,7 @@ const CommuContainer = styled.div`
   font-size: 11px;
   padding: 15px 0;
   padding-right: 5px;
+  
 `;
 
 const CommuRight = styled.span`
@@ -83,7 +87,21 @@ const Comments = styled.span``;
 
 
 
-const CommentContainer = styled.div``;
+const CommentContainer = styled.div`
+.ant-list-item-meta-title a{
+    font-size: 0.8rem;;
+  }
+  .ant-list-item-meta-description{
+    font-size:0.3rem ;
+    
+  }
+  .ant-list-item-action a{
+    font-size:0.7rem;
+  }
+  .ant-list-empty-text {
+    display:none
+  }
+`;
 
 const CommentCnt = styled.div`
   font-size: 13px;

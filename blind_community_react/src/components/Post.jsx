@@ -15,7 +15,7 @@ const Container = styled.div`
 
 const Title = styled.div`
   font-size: 14px;
-  font-weight:bold;
+  font-weight:600;
 `;
 
 const Rank = styled.span`
@@ -61,9 +61,12 @@ const Post = ({ title, author, createDate, like, comment, rank,postNo}) => {
         </Title>
         <PostSub>
           <Left>
+          <CreateDate>{createDate}</CreateDate>
+          <Bar>|</Bar>
             <Author>{author}</Author>
-            <Bar>|</Bar>
-            <CreateDate>{createDate}</CreateDate>
+            
+            
+            
           </Left>
           <Right>
             <Span>

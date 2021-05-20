@@ -53,28 +53,7 @@ const PostDetail = ({match}) => {
       dispatch(loadingActions.setLoading({isLoading}))
   },[dispatch])
 
-  useEffect(()=>{
-    api.customAPI(
-      `get`,
-      `/board/post/views`,
-      (data)=> console.log('호잇'),
-      {params:{ post_no}}
-    )
-  },[])
-
-  useEffect( ()=>{
-    api.postDetail({post_no},  (data)=>{
-      console.log(data)
-      console.log(data.post_detail)
-        setLoading(true)
-        if (data.post_detail.liked === 1)  {setLike(true)} else{ setLike(false)}
-        setPostDetail(data.post_detail)
-        setCommentList(data.comments)
-        setCommentCount(data.comments_count)
-        setLoading(false)
-    })
-  },[comment,like])
-  console.log(commentList,'여기염')
+  
   
    console.log(postDetail)
   const handleLikeBtn = () =>{
@@ -87,13 +66,13 @@ const PostDetail = ({match}) => {
     
   })
   }
-  const handleNewCommentBtn = () =>{
+  const handleNewCommentBtn = useCallback( () =>{
     api.createComment({post_no, comment},(data)=>{
         setNewComment(``)
         // setCommentList([...commentList])
-        // window.location.reload()
+        window.location.reload()
     })
-  }
+  })
   const handleMoreButton =  () =>{
      setCurrentComment(currentComment+1)
       api.customAPI(
@@ -122,6 +101,28 @@ const PostDetail = ({match}) => {
     }
     
   }
+  useEffect(()=>{
+    api.customAPI(
+      `get`,
+      `/board/post/views`,
+      (data)=> console.log('호잇'),
+      {params:{ post_no}}
+    )
+  },[])
+
+  useEffect( ()=>{
+    api.postDetail({post_no},  (data)=>{
+      console.log(data)
+      console.log(data.post_detail)
+        setLoading(true)
+        if (data.post_detail.liked === 1)  {setLike(true)} else{ setLike(false)}
+        setPostDetail(data.post_detail)
+        setCommentList(data.comments)
+        setCommentCount(data.comments_count)
+        setLoading(false)
+    })
+  },[like])
+  console.log(commentList,'여기염')
   return (
     <Layout>
       <pack.Container>
@@ -143,8 +144,9 @@ const PostDetail = ({match}) => {
             {postDetail.title}
           </pack.PostTitle>
           <pack.ABDContainer>
-            <pack.Author>{postDetail.nickname}</pack.Author>
-            <pack.Bar>|</pack.Bar>
+          <pack.Author>작성자: {postDetail.nickname}</pack.Author>
+            {/* <pack.Bar>|</pack.Bar> */}
+            
             <pack.Date>{postDetail.create_datetime}</pack.Date>
           </pack.ABDContainer>
           <pack.Content> 
@@ -191,7 +193,7 @@ const PostDetail = ({match}) => {
             createDate = {comment.create_datetime}
             content = {comment.text}
             />)} */}
-            <Comments list ={commentList} handleMoreButton={handleMoreButton}/>
+            <Comments list ={commentList} handleMoreButton={handleMoreButton} setCommentList={setCommentList}/>
             
           
           
@@ -206,7 +208,9 @@ const PostDetail = ({match}) => {
           <pack.Input  
           onChange ={(e)=>setNewComment(e.target.value)}
           placeholder={`댓글을 입력하세요.`}
-          onKeyPress={(e) => { if (e.key == "Enter") handleNewCommentBtn(); }}
+          onKeyPress={(e) => { if (e.key == "Enter") handleNewCommentBtn() }}
+          value = {comment}
+        
            />
           <pack.InputBtn onClick = {handleNewCommentBtn}>
             <img src={flyIcon}  />

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect,useCallback } from "react";
 import { useCookies } from 'react-cookie';
 import { Link, useHistory } from "react-router-dom";
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
@@ -35,26 +35,26 @@ const MyPage = ({ location }) => {
   const PER_PAGE = 5;
   const [curPage, setCurPage] = useState(1);
   const [totalPage,setTotalPage] = useState(0);
+
+  const setMyFirst = useCallback((first)=>{
+    dispatch(authActions.setMyFirst({first}))
+},[dispatch])
+
   const paginationHandler = current => {
     console.log(current)
     setCurPage(current);
     dispatch(authActions.myPageSecondData(current-1,setTotalPage))
   };
 
-  const {first,second,curType} = useSelector(({auth})=>({
-    first:auth.myPage.first,
-    second:auth.myPage.second,
-    curType:auth.myPage.curType
-  }),shallowEqual)
-  useEffect(() => {
-    dispatch(authActions.myPageFirstData())
-  }, [])
-
   const handlePasswordEdit = () =>{
     api.customAPI(
       "post",
       '/auth/mypage',
-      (data) => {setPassword('');alert('비밀번호가 성공적으로 변경 되었습니다.');},
+      (data) => {
+        setPassword('');
+
+        alert('비밀번호가 성공적으로 변경 되었습니다.');
+      },
       {data:{edit_type : "password",password }}
     )
   }
@@ -62,21 +62,35 @@ const MyPage = ({ location }) => {
     api.customAPI(
       'post',
       '/auth/mypage',
-      (data)=>{setNickname('');alert('닉네임이 성공적으로 변경 되었습니다');},
+      (data)=>{
+        setNickname('');
+        setMyFirst({...first,nickname:nickname})
+        alert('닉네임이 성공적으로 변경 되었습니다');
+      },
       {data:{edit_type : 'nickname', nickname}}
     )
   }
-  const handleSignOut = () =>{
+  const handleSignOut = async () =>{
     api.customAPI(
       'delete',
       '/auth/signout',
       (data)=>{
-        removeCookies('accessToken')
+       removeCookies('accessToken')
         history.push('/signin')
       },
       {}
     )
   }
+  const {first,second,curType} = useSelector(({auth})=>({
+    first:auth.myPage.first,
+    second:auth.myPage.second,
+    curType:auth.myPage.curType
+  }),shallowEqual)
+
+  useEffect(() => {
+    dispatch(authActions.myPageFirstData())
+  }, [])
+
 
 
   return (

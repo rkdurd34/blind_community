@@ -40,14 +40,14 @@ const Search = ({ location }) => {
     dispatch(boardActions.searchPageData(curPage,searchInput,setTotalPage))
   }
   useEffect(()=>{
-    return ()=>{
-      return 
+    return ()=>
+      
       setSearchPost({
         totalCount: 30,
         postList: [],
-        isSearched: false}
-      )
-      }
+        isSearched: false})
+      
+      
   },[])
   return (
     <Layout Headers={false}>

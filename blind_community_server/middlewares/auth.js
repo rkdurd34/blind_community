@@ -21,8 +21,8 @@ module.exports = {
         AND a.user_no = ?
         AND token = ?;
     `, [user_no, accessToken]);
-
-      if (results.count < 1) throw err.Unauthorized("로그아웃");
+      if (results.length < 1) throw err.Unauthorized('로그아웃 된 삳ㅇ태')
+      // if (results.count < 1) throw err.Unauthorized("로그아웃");
       req.userData = {
         region_no: results[0].region_no,
         sector_no: results[0].sector_no,

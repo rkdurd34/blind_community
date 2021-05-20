@@ -27,7 +27,7 @@ router.delete('/post/delete', checkUser, board.postDelete);
 router.get('/post/views', checkUser, board.updateViews);
 
 router.get('/post/best',checkUser,board.bestPost)
-
+router.delete('/comment/delete',checkUser,board.deleteComment)
 
 
 

@@ -10,7 +10,7 @@ export default function Layout({ children, BackButton, Logo, SearchButton, MyPag
   const history = useHistory();
 
   return (
-    <>
+    <pack.Wrapper>
       <pack.Container>
         {Headers && <pack.Header>
           <div className="left">
@@ -37,14 +37,15 @@ export default function Layout({ children, BackButton, Logo, SearchButton, MyPag
           {children}
         </main>
 
-
+        
       </pack.Container>
       <pack.Footer>푸터</pack.Footer>
 
 
+
       <Loading />
 
-    </>
+    </pack.Wrapper>
   );
 }
 Layout.defaultProps = {

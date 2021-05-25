@@ -1,11 +1,97 @@
 const { signToken, verifyToken } = require('../utils/auth.util');
 const qs = require('query-string');
 
-const fs = require('fs');
-var Iconv = require('iconv').Iconv;
-const xlsxFile = require('read-excel-file/node');
-const xlsx = require("xlsx");
 const controller = {
+  login: async ({ body }, res, next) => {
+    try {
+      const email = body.email;
+      const password = body.password;
+
+      const [result1] = await res.pool.query(`
+      SELECT *
+      FROM admins
+      WHERE 
+      email = ?
+      AND PASSWORD = PASSWORD(?)
+    `, [email, password]);
+
+      if (result1.length < 1) throw res.err.BadRequest("잘못된 이메일이나 비밀번호입니다");
+      const token = signToken(result1[0].no);
+
+      const [result2] = await res.pool.query(`
+        SELECT COUNT(*) AS 'count'
+        FROM tokens
+        WHERE 
+        user_no = ?
+      `, [result1[0].no]);
+
+      if (result2[0].count > 0) {
+        await res.pool.query(`
+          UPDATE tokens
+          SET token = ?
+          WHERE 
+          user_no = ?
+        `, [token, result1[0].no]);
+      } else {
+        await res.pool.query(`
+          INSERT INTO 
+          tokens(user_no, token)
+          VALUES(?,?);
+        `, [result1[0].no, token]);
+      }
+
+      res.cookie("adminToken", token, { httpOnly: false, maxAge: 1000 * 60 * 60 });
+      next({ accessToken: token });
+      next('good');
+    } catch (e) {
+      next(e);
+    }
+  },
+  getUserData: async ({ }, { pool }, next) => {
+    try {
+      const [result] = await pool.query(`
+        SELECT 
+        a.no AS user_no,
+        a.is_valid,
+        a.email,
+        a.nickname,
+        a.is_valid,
+        c.name AS sector,
+        d.bname AS region,
+        b.business_number,
+        b.image_url
+        FROM users AS a
+        INNER JOIN shops AS b
+        ON b.user_no = a.no
+        INNER JOIN sectors AS c
+        ON a.sector_no = c.no
+        INNER JOIN region_4 AS d
+        ON d.no = a. region_no
+      `);
+      console.log('result');
+      next(result);
+    } catch (e) {
+      next(e);
+    }
+  },
+  editUserData: async ({ body }, { pool }, next) => {
+    try {
+      const user_no = body.user_no;
+      const is_valid = body.is_valid;
+      console.log(is_valid);
+      const [result] = await pool.query(`
+        UPDATE users
+        SET is_valid = ?
+        WHERE no =?
+      `, [is_valid, user_no]);
+      next('g');
+    } catch (e) {
+      next(e);
+    }
+  },
+
+
+
   signup: async ({ file, body }, { err, pool }, next) => {
     try {
       const email = body.email;
@@ -79,7 +165,6 @@ const controller = {
 
       if (result1.length < 1) throw res.err.BadRequest("잘못된 이메일이나 비밀번호입니다");
 
-      if (result1[0].is_valid === 0) throw res.err.BadRequest('사업자인증 승인 전입니다');
       const token = signToken(result1[0].no);
 
       const [result2] = await res.pool.query(`

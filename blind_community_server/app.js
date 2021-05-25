@@ -15,23 +15,25 @@ app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// app.use(express.static("media"));
+
 // require('dayjs/locale/ko');
 app.use(database(), errorHandler());
 dayjs = require('dayjs');
 dayjs.locale('ko');
+
 morgan.token('date', () => dayjs().format("YYYY-MM-DD HH:mm:ss"));
 app.use(morgan(`:date[iso][:status][:method] :url :response-time ms :res[content-length] bytes`));
 // const upload = multer({ dest: 'media/img' });
 // app.post("/board/upload", upload.array('docs'));
 
 // app.get('/test', require('./routes/test.routes'));
-
+app.use('/media', express.static("media"));
 
 
 app.use('/auth', require('./routes/auth.routes'));
 app.use('/board', require('./routes/board.routes'));
 app.use('/mypage', require('./routes/mypage.routes'));
+app.use('/admin', require('./routes/admin.routes'));
 
 app.use((req, { err }, next) => {
   next(err.NotFound('요청하신 페이지를 찾을 수 없습니다.'));

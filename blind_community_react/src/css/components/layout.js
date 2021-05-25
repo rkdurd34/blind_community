@@ -1,11 +1,12 @@
 import styled from 'styled-components';
+const Wrapper =styled.div`
 
+`
 const Container = styled.div`
   display: flex;
   height: max-content;
-  width: 100%;
+  width: 375px;
   background-color:#F8F9FA;
-  display:flex;
   flex-direction:column;
   min-height:90vh;
   main{
@@ -130,6 +131,6 @@ const Footer = styled.div`
   align-items:center;
 `;
 const pack = {
-  Container, Header, BackButton, Logo, SearchButton, MyPageButton, PostButton, Footer, Body
+  Wrapper,Container, Header, BackButton, Logo, SearchButton, MyPageButton, PostButton, Footer, Body
 };
 export default pack;

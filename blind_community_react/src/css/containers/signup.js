@@ -2,18 +2,18 @@ import styled from 'styled-components';
 const SignUpOuterContainer = styled.div`
   display: flex;
   flex-direction:column;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: center;
   align-items: center;
-  height: 100%;
-  width: 100%;
+  height: 812px ;
+  width: 375px;
 
 
 `;
 const SignUpGoBackIcon = styled.div`
-  position:absolute;
+  /* position:absolute;
   top:0;
-  left:0;
+  left:0; */
   width:100%;
   height:10%;
   font-size:1.5rem;

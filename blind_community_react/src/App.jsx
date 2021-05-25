@@ -20,6 +20,8 @@ import {BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Loading from './components/Loading'
 import AuthRoute from './routes/authRoute';
 import PublicRoute from './routes/publicRoute';
+import AdminPublic from './routes/adminPuiblic';
+import AdminPrivate from './routes/adminPrivate';
 
 
 import styled from 'styled-components'
@@ -39,6 +41,9 @@ const Search =  lazy(()=>import('./containers/Search'))
 const PostEdit = lazy(()=> import('./containers/PostEdit'))
 const Comments = lazy(()=>import('./components/Comments'))
 
+const AdminLogin = lazy(()=>import('./containers/AdminLogin'))
+const AdminMain  = lazy(()=>import('./containers/AdminMain'))
+const AdminPaper = lazy(()=>import('./containers/AdminPaper'))
 
 
 
@@ -65,7 +70,10 @@ function App() {
 
         <AuthRoute exact path='/test' component ={Comments}/> 
         
-        
+        <AdminPublic exact path = '/admin/signin' component={AdminLogin} />
+        <AdminPrivate exact path = '/admin' render={(props)=><AdminMain title = {'메인화면'}{...props}/>}/>
+        <AdminPrivate exact path = '/admin/paper' render={(props)=><AdminPaper title = {'사업자등록증 관리'}{...props}/>}/>
+        {/* <Route exact path='/test' render={(props) => <TestPage auth={0} title={`테스트화면`} {...props} />} /> */}
         <Route component = {NotFound}/>
       </Switch>
       </Suspense>

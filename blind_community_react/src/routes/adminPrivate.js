@@ -1,15 +1,12 @@
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
-function AuthRoute({ component: Component, render, history, ...rest }) {
+function AdminPrivate({ component: Component, render, history, ...rest }) {
 
-  const [cookies] = useCookies('accessToken');
-  console.log(cookies.asd);
-  console.log(cookies.accessToken === undefined);
-  const authenticated = (cookies.accessToken === undefined) ? false : true;
-  console.log(rest);
+  const [cookies] = useCookies('adminToken');
+  const authenticated = (cookies.adminToken) ? true : false;
   console.log(authenticated);
-  console.log(cookies.accessToken);
+  console.log(cookies);
   return (
     <Route
       {...rest}
@@ -22,7 +19,7 @@ function AuthRoute({ component: Component, render, history, ...rest }) {
           )
         ) : (
           <Redirect
-            to={{ pathname: "/signin", state: { from: props.location } }}
+            to={{ pathname: "/admin/signin", state: { from: props.location } }}
           />
         )
       }
@@ -30,4 +27,4 @@ function AuthRoute({ component: Component, render, history, ...rest }) {
   );
 }
 
-export default AuthRoute;
+export default AdminPrivate;

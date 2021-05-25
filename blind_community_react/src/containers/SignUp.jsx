@@ -8,6 +8,7 @@ import check from '../utils/RegCheck'
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
 import * as authActions from '../store/modules/auth'
+import back from "../assets/svgs/back.svg";
 
 export default function SignUp() {
 
@@ -53,6 +54,7 @@ export default function SignUp() {
   return (
     <pack.SignUpOuterContainer>
       <pack.SignUpGoBackIcon onClick={()=>history.push('/signin')}>
+      
       <ArrowLeftOutlined />
       </pack.SignUpGoBackIcon>
       <pack.SignUpInnerContainer>        

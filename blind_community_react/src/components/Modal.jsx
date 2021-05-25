@@ -1,10 +1,11 @@
-import React from "react";
+ import React from "react";
 import PropTypes from "prop-types";
 
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 
 const ResponsiveModal = ({ title, subtitle, open, onClose, children }) => {
+  console.log('뭐야')
   return (
     <>
       <Modal
@@ -16,12 +17,15 @@ const ResponsiveModal = ({ title, subtitle, open, onClose, children }) => {
             background: `rgba(255, 255, 255, 0.95)`,
             borderRadius: `0.4rem`,
             border: `1px solid #adb5bd`,
-            width:`600px`,
-            height:`500px`
+            width:`1000px`, 
+            height:`800px`
           }
         }}
       >
-       
+        <div style={{
+          fontSize:"1.5rem",
+          fontWeight:600,
+          }}>{title}</div>
           {children}
        
       </Modal>

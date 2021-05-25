@@ -1,18 +1,17 @@
 import styled from 'styled-components';
 const SignUpOuterContainer = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction:column;
+  justify-content: flex-start;
   text-align: center;
   align-items: center;
-  height: 100%;
-  width: 100%;
+  height: 812px ;
+  width: 375px;
 
 
 `;
 const SignUpGoBackIcon = styled.div`
-  position:absolute;
-  top:0;
-  left:0;
+  
   width:100%;
   height:10%;
   font-size:1.5rem;
@@ -20,6 +19,10 @@ const SignUpGoBackIcon = styled.div`
   justify-content:flex-start;
   align-items:center;
   padding-left:1rem;
+  img{
+    width:10%;
+    height:30%;
+  }
 `;
 const SignUpInnerContainer = styled.div`
   width: 80%;

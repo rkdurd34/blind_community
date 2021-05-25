@@ -1,0 +1,31 @@
+{
+  "menu": [
+    {
+      "key": "1",
+      "main_menu_key": null,
+      "title": "메인화면",
+      "path": "/admin",
+      "container": "MainPage",
+      "auth": "*"
+    },
+    {
+      "key": "2",
+      "main_menu_key": null,
+      "title": "사업자등록증 관리",
+      "path": "/admin/paper",
+      "container": "AdminPaper",
+      "auth": "*"
+    },
+
+
+
+    {
+      "key": "99999",
+      "main_menu_key": null,
+      "title": "테스트화면",
+      "path": "/admin/test",
+      "container": "TestPage",
+      "auth": 0
+    }
+  ]
+}

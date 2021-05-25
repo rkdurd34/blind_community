@@ -9,6 +9,7 @@ import DaumPostcode from "react-daum-postcode";
 import Modal from '../components/Modal'
 import SelectDropDown from '../components/SelectDropDown'
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import back from "../assets/svgs/back.svg";
 
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
 import * as authActions from '../store/modules/auth'
@@ -142,6 +143,7 @@ if(email.length < 1 || password.length < 1) history.push('/signin')
     <pack.SignUpOuterContainer>
       <pack.SignUpGoBackIcon onClick={()=>history.push('/signin')}>
       <ArrowLeftOutlined />
+      
       </pack.SignUpGoBackIcon>
       <pack.SignUpInnerContainer>        
           <pack.Title>

@@ -4,8 +4,8 @@ const SignUpOuterContainer = styled.div`
   justify-content: center;
   text-align: center;
   align-items: center;
-  height: 100%;
-  width: 100%;
+  height: 812px ;
+  width: 375px;
 
 
 `;

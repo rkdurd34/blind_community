@@ -4,10 +4,8 @@ import styled from 'styled-components';
 const Container = styled.div`
   width:100%;
   height:max-content;
-  tbody.ant-table-tbody tr.ant-table-row td:nth-child(6) {
-    display:flex;
-    justify-content: center;
-    align-items: center;
+  tbody.ant-table-tbody tr.ant-table-row td:nth-child(1) {
+    
     text-align: center ;
     
   }

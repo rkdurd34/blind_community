@@ -21,7 +21,6 @@ const PostEdit = ({ location,history,match }) => {
     const {editPost} = useSelector(({board})=> ({
         editPost: board.postDetail
     }),shallowEqual)
-    console.log(editPost)
     // if (region.no==="" || sector.no==="" ) history.push('/board/all')
 
     const setEditPost = useCallback((editPost)=>{

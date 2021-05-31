@@ -53,9 +53,6 @@ const PostDetail = ({match}) => {
       dispatch(loadingActions.setLoading({isLoading}))
   },[dispatch])
 
-  
-  
-   console.log(postDetail)
   const handleLikeBtn = () =>{
     api.postLike(post_no, ()=>{
       if (like){
@@ -79,7 +76,6 @@ const PostDetail = ({match}) => {
         `get`,
         `/board/post/comment`,
         (data)=>{
-          console.log(data)
           // console.log(data,"asdjaskldmaskldmklasmdklamskldmalksmdlkamslkdmlaksmdklasmd여기양",currentComment)
           // if (data.length < 1) setCurrentComment(currentComment-1)
           setCommentList([...commentList,...data])
@@ -105,15 +101,13 @@ const PostDetail = ({match}) => {
     api.customAPI(
       `get`,
       `/board/post/views`,
-      (data)=> console.log('호잇'),
+      (data)=> {},
       {params:{ post_no}}
     )
   },[])
 
   useEffect( ()=>{
     api.postDetail({post_no},  (data)=>{
-      console.log(data)
-      console.log(data.post_detail)
         setLoading(true)
         if (data.post_detail.liked === 1)  {setLike(true)} else{ setLike(false)}
         setPostDetail(data.post_detail)
@@ -122,7 +116,6 @@ const PostDetail = ({match}) => {
         setLoading(false)
     })
   },[like])
-  console.log(commentList,'여기염')
   return (
     <Layout>
       <pack.Container>

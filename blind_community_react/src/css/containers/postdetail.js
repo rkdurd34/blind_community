@@ -101,6 +101,9 @@ const CommentContainer = styled.div`
   .ant-list-empty-text {
     display:none
   }
+  span{
+    cursor:pointer
+  }
 `;
 
 const CommentCnt = styled.div`
@@ -108,6 +111,7 @@ const CommentCnt = styled.div`
   font-weight: bold;
   border-top: 2px solid #fff;
   padding: 10px 0;
+  
 `;
 
 const MoreWrap = styled.div`

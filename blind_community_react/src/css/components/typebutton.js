@@ -5,6 +5,7 @@ const TypeButton = styled.div`
   height:100%;
   .ant-btn-primary:hover{
     color:${props => props.picked ? "white" : "#5C3EC2"};
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
   button{
     width:100%;
@@ -12,6 +13,7 @@ const TypeButton = styled.div`
     border:none;
     background-color:${props => props.picked ? "#5C3EC2" : "white"} !important;
   color:${props => props.picked ? "white" : "#5C3EC2"};
+  
   }  
 
   .subTitle{

@@ -1,8 +1,8 @@
 import React from 'react';
-import { shallowEqual, useSelector, useDispatch } from 'react-redux';
-import * as loadingActions from '../store/modules/loading';
+import { shallowEqual, useSelector } from 'react-redux';
+// import * as loadingActions from '../store/modules/loading';
 import pack from '../css/components/loading';
-import { Spin, Alert } from 'antd';
+import { Spin } from 'antd';
 export default function Loading() {
   const { isLoading } = useSelector(({ loading }) => ({
     isLoading: loading.isLoading

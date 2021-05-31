@@ -67,6 +67,7 @@ const controller = {
         ON a.sector_no = c.no
         INNER JOIN region_4 AS d
         ON d.no = a. region_no
+        ORDER BY a.create_datetime DESC;
       `);
       console.log('result');
       next(result);

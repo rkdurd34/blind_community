@@ -15,17 +15,8 @@
       "path": "/admin/paper",
       "container": "AdminPaper",
       "auth": "*"
-    },
-
-
-
-    {
-      "key": "99999",
-      "main_menu_key": null,
-      "title": "테스트화면",
-      "path": "/admin/test",
-      "container": "TestPage",
-      "auth": 0
     }
+
+
   ]
 }

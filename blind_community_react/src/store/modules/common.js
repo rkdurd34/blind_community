@@ -4,10 +4,12 @@ import { Record, List } from "immutable";
 const MENU_COLLAPSED = 'common/view/MENU_COLLAPSED';
 const MENU_SELECTED = 'common/view/MENU_SELECTED';
 const MENU_OPENED = 'common/view/MENU_OPENED';
+const SET_LOADING = 'common/view/SET_LOADING';
 
 export const menuCollapsed = createAction(MENU_COLLAPSED);
 export const menuSelected = createAction(MENU_SELECTED);
 export const menuOpened = createAction(MENU_OPENED);
+export const setIsLoading = createAction(SET_LOADING);
 
 export const asyncPushHistoryPage = ({ menu, history }) => async dispatch => {
     console.log(menu);
@@ -47,4 +49,5 @@ export default handleActions({
     [MENU_COLLAPSED]: (state, { payload }) => state.setIn(['view', 'collapsed'], !payload.collapsed),
     [MENU_SELECTED]: (state, { payload }) => state.setIn(['view', 'selected_keys', 0], payload.selected_key),
     [MENU_OPENED]: (state, { payload }) => state.setIn(['view', 'open_keys'], List(payload.open_keys)),
+    [SET_LOADING]: (state, { payload }) => state.setIn(['view', 'is_loading'], payload.is_loading)
 }, initialState());

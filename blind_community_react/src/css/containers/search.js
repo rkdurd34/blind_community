@@ -14,6 +14,7 @@ const InputContainer = styled.div`
 
 const Back = styled.div`
   width: 30px;
+  font-size: 1.5rem;
   padding: 5px;
   display: flex;
   align-items: center;

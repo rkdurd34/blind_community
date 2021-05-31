@@ -5,8 +5,6 @@ function AdminPrivate({ component: Component, render, history, ...rest }) {
 
   const [cookies] = useCookies('adminToken');
   const authenticated = (cookies.adminToken) ? true : false;
-  console.log(authenticated);
-  console.log(cookies);
   return (
     <Route
       {...rest}

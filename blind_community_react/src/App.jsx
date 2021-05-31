@@ -24,11 +24,10 @@ import AdminPublic from './routes/adminPuiblic';
 import AdminPrivate from './routes/adminPrivate';
 
 
-import styled from 'styled-components'
 
 const BestPost = lazy(()=>import('./containers/BestPost'))
 const Main = lazy(()=> import('./containers/Main'))
-const Test=  lazy(()=>import('./containers/Test'))
+// const Test=  lazy(()=>import('./containers/Test'))
 const SignIn = lazy(()=>import('./containers/SignIn'))
 const SignUp = lazy(()=>import('./containers/SignUp'))
 const SignUp2 = lazy(()=>import('./containers/SignUp2'))
@@ -44,6 +43,7 @@ const Comments = lazy(()=>import('./components/Comments'))
 const AdminLogin = lazy(()=>import('./containers/AdminLogin'))
 const AdminMain  = lazy(()=>import('./containers/AdminMain'))
 const AdminPaper = lazy(()=>import('./containers/AdminPaper'))
+// const AdminCategory = lazy(()=> import ('./containers/AdminCategory'))
 
 
 
@@ -71,8 +71,9 @@ function App() {
         <AuthRoute exact path='/test' component ={Comments}/> 
         
         <AdminPublic exact path = '/admin/signin' component={AdminLogin} />
-        <AdminPrivate exact path = '/admin' render={(props)=><AdminMain title = {'메인화면'}{...props}/>}/>
+        <AdminPrivate exact path = '/admin' render={(props)=><AdminMain title = {'MONTENT 관리자 페이지'}{...props}/>}/>
         <AdminPrivate exact path = '/admin/paper' render={(props)=><AdminPaper title = {'사업자등록증 관리'}{...props}/>}/>
+        {/* <AdminPrivate exact path = '/admin/category' render={(props)=><AdminCategory title = {'카테고리 추가'}{...props}/>}/> */}
         {/* <Route exact path='/test' render={(props) => <TestPage auth={0} title={`테스트화면`} {...props} />} /> */}
         <Route component = {NotFound}/>
       </Switch>

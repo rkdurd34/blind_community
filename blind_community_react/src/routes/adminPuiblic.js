@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 function AdminPublic({ component: Component, render, location, ...rest }) {

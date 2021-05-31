@@ -3,9 +3,10 @@ import { Table,Button } from 'antd';
 import Layout from '../components/AdminLayout'
 import pack from '../css/containers/adminpaper'
 import Modal from '../components/Modal';
-import {List,Avatar,Col,Card,Row,Radio} from 'antd'
+import {Col,Card,Row,Radio} from 'antd'
 import api from '../utils/api';
 import * as adminActions from '../store/modules/admin'
+import * as commonActions from '../store/modules/common' 
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
 const AdminPaper = ({ history, auth, title }) => {
     const dispatch = useDispatch()
@@ -21,39 +22,44 @@ const AdminPaper = ({ history, auth, title }) => {
     const setUserData = useCallback((users)=>{
         dispatch(adminActions.setUserData({users}))
     },[dispatch])
+    const setIsLoading = useCallback((is_loading)=>{
+        dispatch(commonActions.setIsLoading({is_loading}))
+    },[dispatch])
+
     const {users} = useSelector(({admin})=>({
         users: admin.users,
     }),shallowEqual)
+
     const handleSetOpenModal = useCallback((data) =>{
         setUserDetail(users.filter(user => user.user_no === data.user_no )[0])
         setOpenModal(true)
-
-    },[userDetail,users])
+    })
     const handleEditButton = useCallback(()=>{
+        setIsLoading(true)
         api.customAPI(
             `post`,
             `/admin/paper/check`,
             (data)=>{
-                console.log(data); 
                 history.push('/admin/paper')
                 setOpenModal(false)
             },
             {data:{user_no:userDetail.user_no, is_valid:userDetail.is_valid === "O" ? 1 :0}}
         )
-    },[userDetail])
+    },[userDetail,history, setIsLoading])
     useEffect(() => {
+        setIsLoading(true)
         api.customAPI(
             `get`,
             `/admin/paper/user`,
             (data)=> {
-                setUserData(data.map(user => ({...user, is_valid:user.is_valid === 0 ? "X" : "O"})))
-                console.log(data)
+                setUserData(data.map(user => ({...user, is_valid:user.is_valid === 0 ? "X" : "O", key: user.no})))
+                setIsLoading(false)
             },
             {}
         )
         return 
-    }, [openModal])
-    console.log(userDetail)
+    }, [openModal,setUserData,setIsLoading])
+    
     return (
         <>
         <Layout history={history} auth={auth} title={title}>
@@ -63,7 +69,7 @@ const AdminPaper = ({ history, auth, title }) => {
                 {
                     title: '',
                     dataIndex: '',
-                    key: 'x',
+                    key: (data)=>{console.log(data)},
                     render: (data) =>  <Button type="primary" onClick={() => handleSetOpenModal(data)}>자세히보기</Button>,
                   },
                 { title: '이메일', dataIndex: 'email', key: 'email' },
@@ -72,11 +78,10 @@ const AdminPaper = ({ history, auth, title }) => {
                 { title: '확인여부', dataIndex: 'is_valid', key: 'is_valid' },
                 { title: '업종', dataIndex: 'sector', key: 'sector' },
                 { title: '지역', dataIndex: 'region', key: 'region' },
-                
-                
               ]}
             dataSource={users}
-            scroll={{  x: 1000,y: 600 }}
+            scroll={{  x: 1000,y: `70vh` }}
+            rowKey={(data)=>{return data.user_no}}
               />
               </pack.Container>
         
@@ -89,7 +94,7 @@ const AdminPaper = ({ history, auth, title }) => {
      >
          <pack.ModalContainer>
               <div className="image-container">
-                  <img src ={`http://localhost:5000/${userDetail.image_url}`} />
+                  <img alt="사업자등록증 이미지" src ={`http://localhost:5000/${userDetail.image_url}`} />
               </div>
               <div className="list-container">
                 <div className="site-card-wrapper">
@@ -122,7 +127,7 @@ const AdminPaper = ({ history, auth, title }) => {
                     <Col span={8}>
                         <Card title="설정" bordered={false}>
                         <Radio.Group onChange={(e)=>{
-                            console.log(userDetail)
+                            
                             setUserDetail({...userDetail, is_valid:e.target.value})
                             }} value={userDetail.is_valid}>
                             <Radio value={"O"}>확인</Radio>

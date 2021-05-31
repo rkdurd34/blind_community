@@ -2,9 +2,10 @@ import React from 'react';
 import Loading from '../components/Loading';
 
 import pack from '../css/components/layout';
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { ArrowLeftOutlined, SearchOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+
+import FooterImage from '../assets/img/footer.png';
 
 export default function Layout({ children, BackButton, Logo, SearchButton, MyPageButton, PostButton, Headers }) {
   const history = useHistory();
@@ -37,9 +38,11 @@ export default function Layout({ children, BackButton, Logo, SearchButton, MyPag
           {children}
         </main>
 
-        
+
       </pack.Container>
-      <pack.Footer>푸터</pack.Footer>
+      <pack.Footer>
+        <img src={FooterImage} alt="푸터 이미지"/>
+      </pack.Footer>
 
 
 

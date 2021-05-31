@@ -61,7 +61,10 @@ const Layout = ({ history, auth, title, children }) => {
                 collapsible
                 collapsed={view.collapsed}
                 onCollapse={() => onToggle({ collapsed: view.collapsed })}
-                style={{ overflowX: `hidden`, overflowY: `scroll`, height: `100vh` }}
+                style={{ 
+                    // overflowX: `hidden`,
+                    // overflowY: `scroll`,
+                     height: `100vh` }}
             >
                 <div
                     style={{

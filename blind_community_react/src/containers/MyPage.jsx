@@ -41,7 +41,6 @@ const MyPage = ({ location }) => {
 },[dispatch])
 
   const paginationHandler = current => {
-    console.log(current)
     setCurPage(current);
     dispatch(authActions.myPageSecondData(current-1,setTotalPage))
   };
@@ -52,8 +51,10 @@ const MyPage = ({ location }) => {
       '/auth/mypage',
       (data) => {
         setPassword('');
-
+        setPasswordCheck('');
         alert('비밀번호가 성공적으로 변경 되었습니다.');
+        window.location.reload();
+        
       },
       {data:{edit_type : "password",password }}
     )
@@ -66,6 +67,7 @@ const MyPage = ({ location }) => {
         setNickname('');
         setMyFirst({...first,nickname:nickname})
         alert('닉네임이 성공적으로 변경 되었습니다');
+        window.location.reload();
       },
       {data:{edit_type : 'nickname', nickname}}
     )

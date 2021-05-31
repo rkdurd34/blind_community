@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { List, Avatar, Button, Skeleton } from 'antd';
 import api from '../utils/api';
 import pack from '../css/containers/postdetail';
 // import reqwest from 'reqwest';
 
-const count = 3;
-const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat&noinfo`;
+// const count = 3;
+// const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat&noinfo`;
 
 
 const Comments = ({ list, handleMoreButton, setCommentList }) => {
-  const post_no = 1;
+  // const post_no = 1;
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   // const [list,setList] = useState([])
 
   // useEffect(() => {
@@ -37,7 +37,7 @@ const Comments = ({ list, handleMoreButton, setCommentList }) => {
       `delete`,
       `/board/comment/delete`,
       (data) => {
-        setCommentList(list.filter((comment) => comment.no != no));
+        setCommentList(list.filter((comment) => comment.no !== no));
       },
       { params: { comment_no: no } }
     );
@@ -60,7 +60,7 @@ const Comments = ({ list, handleMoreButton, setCommentList }) => {
         return (
           <List.Item
             actions={[
-              <a key="list-loadmore-edit" onClick={() => handleDeleteBtn(item.no)} >삭제</a>,
+              <span key="list-loadmore-edit" onClick={() => handleDeleteBtn(item.no)} >삭제</span>,
               // <a key="list-loadmore-more">more</a>
             ]}
           >

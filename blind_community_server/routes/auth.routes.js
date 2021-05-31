@@ -6,8 +6,8 @@ const { businessImgUpload, testUpload } = require('../utils/multer');
 
 // const { checkShop, apiTrackingShop } = require('../middlewares/auth')
 router.post('/signup',
-  // businessImgUpload.single('image'),
-  testUpload.single('image'),
+  businessImgUpload.single('image'),
+  // testUpload.single('image'),
   auth.signup); // 회원가입
 router.post('/signin', auth.signin); // 로그인
 router.delete('/signout', auth.signout); // 로그인

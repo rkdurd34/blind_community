@@ -8,7 +8,7 @@ import SearchIcon from "../components/searchIcon";
 import back from "../assets/svgs/back.svg";
 
 import pack from '../css/containers/search'
-
+import { ArrowLeftOutlined} from '@ant-design/icons';
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
 import board, * as boardActions from '../store/modules/board'
 
@@ -54,7 +54,8 @@ const Search = ({ location }) => {
       <pack.Container>
         <pack.InputContainer>
           <pack.Back onClick ={()=> history.goBack()}>
-            <img src={back} type="image/svg+xml" data={back} />
+            {/* <img src={back} type="image/svg+xml" data={back} /> */}
+            <ArrowLeftOutlined />
           </pack.Back>
           {/* <pack.Img>
             <SearchIcon

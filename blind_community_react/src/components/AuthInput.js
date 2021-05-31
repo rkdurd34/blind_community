@@ -17,7 +17,7 @@ export default function AuthInput({
         className={className}
         type={inputType}
         onChange={(event) => changeHandler(event.target.value)}
-        onKeyPress={(e) => { if (e.key == "Enter") eventHandler(); }}
+        onKeyPress={(e) => { if (e.key === "Enter") eventHandler(); }}
       />
     </div>
 

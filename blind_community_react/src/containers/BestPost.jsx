@@ -54,7 +54,6 @@ export default function BoardAll() {
             `get`,
             `/board/post/best`,
             (data)=>{
-                console.log(data)
                 setSector({
                             no:data.user_data.sector_no,
                             name: data.user_data.name
@@ -88,7 +87,6 @@ export default function BoardAll() {
             `get`,
             `/board/post/best`,
             (data)=>{
-                console.log(data)
                 setPostList(data.post_data)
                 setPostTotalCount(data.total_count)
             },
@@ -106,7 +104,6 @@ export default function BoardAll() {
             `get`,
             `/board/post/best`,
             (data)=>{
-                console.log(data)
                 setPostList(data.post_data)
                 setPostTotalCount(data.total_count)
             },

@@ -41,7 +41,6 @@ export default function SignUp2() {
         isLoading: loading.isLoading
 
     }),shallowEqual)
-    console.log(image)
     const setRegWorkKind = useCallback((workKind)=> {
         dispatch(authActions.setRegWorkKind({workKind}))
     },[dispatch])
@@ -69,7 +68,6 @@ export default function SignUp2() {
   useEffect(() => {
       // setLoading(true)
       api.typeDataFirst(({data})=>{
-        console.log(data)
         setWorkKindList(data[0])
         setBg1List(data[1])
       })
@@ -86,8 +84,6 @@ export default function SignUp2() {
     formData.append('bg1', bg1);
     formData.append('bg2', bg2);
     formData.append('bg3', bg3);
-    console.log(bg1,bg2, "bg확인")
-    console.log(formData);
     const result = api.signup(formData,()=>{
       alert("회원가입 완료")
       history.push('/signin')
@@ -95,16 +91,12 @@ export default function SignUp2() {
   };
   const handleFirstTypeData = async(bg1) =>{
     api.typeDataSecond(bg1, ({data})=>{
-      console.log(data)
-      console.log(bg1)
       setBg2List(data) 
       setRegBg1(bg1)
     })
   }
   const handleSecondTypeData = async(bg2) =>{
     api.typeDataThird(bg2, ({data})=>{
-      console.log(data)
-      console.log(bg2)
       setBg3List(data)
       setRegBg2(bg2)
     })

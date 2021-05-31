@@ -22,11 +22,11 @@ export default function SignIn() {
   
   const setEmail = useCallback((email)=> {
     dispatch(authActions.setEmail({email}))
-  },dispatch)
+  },[dispatch])
 
   const setPassword = useCallback((password)=> {
     dispatch(authActions.setPassword({password}))
-  },dispatch)
+  },[dispatch])
   
 
   const handleLogin = async (e) => {

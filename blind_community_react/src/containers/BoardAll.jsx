@@ -59,7 +59,6 @@ export default function BoardAll() {
              no:data.user_data.region_no,
              bname:data.user_data.bname
          })
-         console.log(data.post_data)
          setPostList(data.post_data)
          setPostTotalCount(data.total_count)
      })

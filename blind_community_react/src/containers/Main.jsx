@@ -50,7 +50,6 @@ export default function Main() {
 
     useEffect(() => {
      api.mainPage(curType, (data)=>{
-         console.log(data)
          setSector({
             no:data.user_data.sector_no,
             name: data.user_data.name
@@ -65,7 +64,6 @@ export default function Main() {
     const handleButtonClick = (curType) => {
         setCurType(curType)
         api.mainPage(curType, (data)=>{
-            console.log(data)
             setMain(data.post_data)
         })
     }
@@ -82,7 +80,7 @@ export default function Main() {
                 <pack.PostTitle>
                     <pack.SVG>
                         
-                        <span>베스트 게시글</span>
+                        <span>🥇 베스트 게시글</span>
                     </pack.SVG>
                     
                     <span><Link to ="/board/best">{"<"}더 보기</Link></span>
@@ -104,7 +102,7 @@ export default function Main() {
             </pack.ListSection>
             <pack.ListSection>
                 <pack.PostTitle>
-                    <span>전체 게시글</span>
+                    <span>📋  전체 게시글</span>
                     <span><Link to ="/board/all">{"<"}더 보기</Link></span>
                 </pack.PostTitle>
                 <pack.PostList>

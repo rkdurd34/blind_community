@@ -23,7 +23,7 @@ dayjs.locale('ko');
 
 morgan.token('date', () => dayjs().format("YYYY-MM-DD HH:mm:ss"));
 app.use(morgan(`:date[iso][:status][:method] :url :response-time ms :res[content-length] bytes`));
-// const upload = multer({ dest: 'media/img' });
+// const ㄹupload = multer({ dest: 'media/img' });
 // app.post("/board/upload", upload.array('docs'));
 
 // app.get('/test', require('./routes/test.routes'));

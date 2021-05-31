@@ -8,6 +8,7 @@ const xlsx = require("xlsx");
 const controller = {
   signup: async ({ file, body }, { err, pool }, next) => {
     try {
+      console.log(file);
       const email = body.email;
       const password = body.password;
       const nickname = body.nickname;

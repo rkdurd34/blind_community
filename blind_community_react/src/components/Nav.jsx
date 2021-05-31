@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
@@ -24,6 +23,8 @@ const Item = styled.li`
   list-style: none;
   margin: 0;
   padding: 10px;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  touch-action: manipulation;
   color: ${props => (props.current ? "#F8F9FA" : "#000")};
   background: ${props => (props.current ? "#5c3ec2" : "#F8F9FA")};
   cursor: pointer;
@@ -57,11 +58,11 @@ const Nav = ({
   return (
     <Container>
       <List>
-        <Item current={curType == "first"} onClick={firstHandler}>
+        <Item current={curType === "first"} onClick={firstHandler}>
           <Category>{firstCategory}</Category>
           <CategoryDetail>{firstSubCategory}</CategoryDetail>
         </Item>
-        <Item current={curType == "second"} onClick={secondHandler}>
+        <Item current={curType === "second"} onClick={secondHandler}>
           <Category>{secondCategory}</Category>
           <CategoryDetail>{secondSubCategory}</CategoryDetail>
         </Item>

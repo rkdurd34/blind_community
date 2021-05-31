@@ -5,7 +5,6 @@ import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 
 const ResponsiveModal = ({ title, subtitle, open, onClose, children }) => {
-  console.log('뭐야')
   return (
     <>
       <Modal

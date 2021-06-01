@@ -239,7 +239,8 @@ const controller = {
           sector_type: result[4][0].name,
           can_edit: result[3][0].can_edit,
           liked: result[5][0].liked,
-          create_datetime: dayjs(result[0].create_datetime).format("YYYY-MM-DD HH:mm:ss")
+          create_datetime: dayjs(result[0].create_datetime).format("YYYY-MM-DD HH:mm:ss"),
+          current_user:user_no
         },
         comments: result[1].map(item => ({ ...item, create_datetime: dayjs(item.create_datetime).format('YYYY-MM-DD HH:mm:ss') })),
         comments_count: result[2][0].count

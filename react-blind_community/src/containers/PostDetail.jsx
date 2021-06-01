@@ -3,22 +3,22 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
 import Layout from "../components/Layout";
-import Comment from "../components/Comment";
+
 import Comments from '../components/Comments'
-import styled from "styled-components";
+
 import { Button } from 'antd';
 import {HeartOutlined}from '@ant-design/icons';
 import viewIcon from "../assets/svgs/view.svg";
 import heartIcon from "../assets/svgs/heart.svg";
 import commentIcon from "../assets/svgs/comment.svg";
-import emptyHeartIcon from "../assets/svgs/emptyHeart.svg";
+
 import flyIcon from "../assets/svgs/fly.svg";
 import api from '../utils/api';
 import pack from '../css/containers/postdetail'
 
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
 import * as boardActions from '../store/modules/board'
-import loading, * as loadingActions from '../store/modules/loading'
+import  * as loadingActions from '../store/modules/loading'
 
 const PostDetail = ({match}) => {
     const post_no = match.params.no
@@ -26,7 +26,7 @@ const PostDetail = ({match}) => {
     const history = useHistory()
     const [like, setLike] = useState(false)
     const [currentComment, setCurrentComment] = useState(1)
-    const {postDetail,region,commentList,commentCount,comment} = useSelector(({board})=>({
+    const {postDetail,commentList,commentCount,comment} = useSelector(({board})=>({
         postDetail: board.postDetail,
         region_name: board.region.bname,
         commentList:board.commentList,
@@ -116,6 +116,7 @@ const PostDetail = ({match}) => {
         setLoading(false)
     })
   },[like])
+  console.log(postDetail)
   return (
     <Layout>
       <pack.Container>
@@ -186,7 +187,12 @@ const PostDetail = ({match}) => {
             createDate = {comment.create_datetime}
             content = {comment.text}
             />)} */}
-            <Comments list ={commentList} handleMoreButton={handleMoreButton} setCommentList={setCommentList}/>
+            <Comments 
+            list ={commentList} 
+            handleMoreButton={handleMoreButton} 
+            setCommentList={setCommentList}
+            canDelete = {postDetail.current_user}
+            />
             
           
           

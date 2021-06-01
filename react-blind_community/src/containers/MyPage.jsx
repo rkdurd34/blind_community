@@ -1,20 +1,20 @@
 import React, { useState,useEffect,useCallback } from "react";
 import { useCookies } from 'react-cookie';
-import { Link, useHistory } from "react-router-dom";
+import {  useHistory } from "react-router-dom";
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
-import board, * as authActions from '../store/modules/auth'
+import  * as authActions from '../store/modules/auth'
 
 import Nav from '../components/Nav'
 import Layout from '../components/Layout'
 import Post from "../components/Post";
 import Pagination from "../components/Pagination2";
-import TypeButton from '../components/TypeButton'
 
-import styled from "styled-components";
+
+
 import pack from '../css/containers/mypage'
 import api from '../utils/api';
 import { Button } from 'antd';
-import { remove } from 'js-cookie';
+
 
 
 const MyPage = ({ location }) => {

@@ -8,7 +8,7 @@ import pack from '../css/containers/postdetail';
 // const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat&noinfo`;
 
 
-const Comments = ({ list, handleMoreButton, setCommentList }) => {
+const Comments = ({ list, handleMoreButton, setCommentList, canDelete }) => {
   // const post_no = 1;
   const [loading, setLoading] = useState(false);
   // const [data, setData] = useState([]);
@@ -49,6 +49,7 @@ const Comments = ({ list, handleMoreButton, setCommentList }) => {
         <Button onClick={onLoadMore}>더보기</Button>
       </pack.MoreWrap>
     ) : null;
+  console.log(list);
   return (
     <List
       className="demo-loadmore-list"
@@ -60,7 +61,7 @@ const Comments = ({ list, handleMoreButton, setCommentList }) => {
         return (
           <List.Item
             actions={[
-              <span key="list-loadmore-edit" onClick={() => handleDeleteBtn(item.no)} >삭제</span>,
+              (canDelete === item.user_no) ? <span key="list-loadmore-edit" onClick={() => handleDeleteBtn(item.no)} >삭제</span> : ``,
               // <a key="list-loadmore-more">more</a>
             ]}
           >

@@ -4,12 +4,9 @@ import { useCookies } from 'react-cookie';
 function AuthRoute({ component: Component, render, history, ...rest }) {
 
   const [cookies] = useCookies('accessToken');
-  console.log(cookies.asd);
-  console.log(cookies.accessToken === undefined);
+
   const authenticated = (cookies.accessToken === undefined) ? false : true;
-  console.log(rest);
-  console.log(authenticated);
-  console.log(cookies.accessToken);
+
   return (
     <Route
       {...rest}

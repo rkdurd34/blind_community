@@ -1,16 +1,16 @@
-import React, { useState,useEffect,useCallback } from "react";
-import { Link,useHistory } from "react-router-dom";
+import React, { useEffect,useCallback } from "react";
+import { useHistory } from "react-router-dom";
 
 import Layout from "../components/Layout";
 
-import styled from "styled-components";
+
 import TypeButton from '../components/TypeButton'
 import pack from '../css/containers/createpost'
 import api from '../utils/api';
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
-import board, * as boardActions from '../store/modules/board'
+import * as boardActions from '../store/modules/board'
 
-const CreatePage = ({ location }) => {
+const CreatePage = ({  }) => {
     const dispatch = useDispatch()
     const history = useHistory()
     const {type, title, content, region, sector, curType} = useSelector(({board})=> ({

@@ -1,7 +1,7 @@
-import React,{useEffect, useCallback} from 'react'
+import React,{useEffect} from 'react'
 // import { useCookies } from 'react-cookie';
 import { Link } from "react-router-dom";
-import api from '../utils/api'
+// import api from '../utils/api'
 // import DaumPostcode from "react-daum-postcode";
 
 import Layout from '../components/Layout'
@@ -21,60 +21,72 @@ export default function Main() {
     const dispatch = useDispatch()
     // const [cookies,setCookies,removeCookies] = useCookies();
     
-    const {curType, sector,region,main} = useSelector(({board,auth})=> ({
-        curType: board.curType,
+    const {post_type, sector,region,main} = useSelector(({board,auth})=> ({
+        post_type: board.post_type,
         sector: board.sector,
         region: board.region,
         postList: board.postList,
         main:board.main,
         email: auth.login.email
     }),shallowEqual)
-    const setCurType = useCallback((curType)=>{
-        dispatch(boardActions.setCurType({curType}))
-    },[dispatch])
+    // const setCurType = useCallback((curType)=>{
+    //     dispatch(boardActions.setCurType({curType}))
+    // },[dispatch])
 
-    const setSector = useCallback((sector)=>{
-        dispatch(boardActions.setSector({sector}))
-    },[dispatch])
+    // const setSector = useCallback((sector)=>{
+    //     dispatch(boardActions.setSector({sector}))
+    // },[dispatch])
 
-    const setRegion = useCallback((region)=>{
-        dispatch(boardActions.setRegion({region}))
-    },[dispatch])
+    // const setRegion = useCallback((region)=>{
+    //     dispatch(boardActions.setRegion({region}))
+    // },[dispatch])
 
-    const setPostList = useCallback((postList)=>{
-        dispatch(boardActions.setPostList({postList}))
-    },[dispatch])
-    const setMain = useCallback((main)=>{
-        dispatch(boardActions.setMain({main}))
-    },[dispatch])
+    // const setPostList = useCallback((postList)=>{
+    //     dispatch(boardActions.setPostList({postList}))
+    // },[dispatch])
+    // const setMain = useCallback((main)=>{
+    //     dispatch(boardActions.setMain({main}))
+    // },[dispatch])
 
     useEffect(() => {
-     api.mainPage(curType, (data)=>{
-         setSector({
-            no:data.user_data.sector_no,
-            name: data.user_data.name
-         })
-         setRegion({
-             no:data.user_data.region_no,
-             bname:data.user_data.bname
-         })
-         setMain(data.post_data)
-     })
-    }, [])
-    const handleButtonClick = (curType) => {
-        setCurType(curType)
-        api.mainPage(curType, (data)=>{
-            setMain(data.post_data)
-        })
-    }
+    //  api.mainPage(curType, (data)=>{
+    //      setSector({
+    //         no:data.user_data.sector_no,
+    //         name: data.user_data.name
+    //      })
+    //      setRegion({
+    //          no:data.user_data.region_no,
+    //          bname:data.user_data.bname
+    //      })
+    //      setMain(data.post_data)
+    //      return
+    //  })
+     dispatch(boardActions.mainPageData('region'))
+    },[dispatch])
+    // const handleButtonClick = (curType) => {
+    //     dispatch(boardActions.mainPageData(curType))
+    //     // api.mainPage(curType, (data)=>{
+    //     //     setMain(data.post_data)
+    //     // })
+    // }
     
     return (
         <Layout BackButton={false}>
             <Banner/>
         
             <pack.ButtonSection>
-                <TypeButton subTitle="내 지역" title ={region.bname} picked ={curType === "region" ? true : false} onClick={()=> handleButtonClick("region")}/>
-                <TypeButton subTitle="내 업종" title= {sector.name} picked = {curType=== "sector" ? true : false} onClick={()=>  handleButtonClick("sector")}/>
+                <TypeButton 
+                    subTitle="내 지역" 
+                    title ={region.bname} 
+                    picked ={post_type === "region" ? true : false} 
+                    onClick={()=> dispatch(boardActions.mainPageData('region'))}
+                />
+                <TypeButton 
+                    subTitle="내 업종"
+                    title= {sector.name}
+                    picked = {post_type=== "sector" ? true : false} 
+                    onClick={()=> dispatch(boardActions.mainPageData('sector'))}
+                  />
             </pack.ButtonSection>
             <pack.ListSection>
                 <pack.PostTitle>
@@ -95,6 +107,7 @@ export default function Main() {
                     comment={post.comment_counts}
                     rank={index+1}
                     postNo = {post.post_no}
+                    key ={index}
                     />
                     )}
          
@@ -114,6 +127,7 @@ export default function Main() {
                     like={post.likes}
                     comment={post.comment_counts}
                     postNo = {post.post_no}
+                    key ={index}
                     />
                     )}
          

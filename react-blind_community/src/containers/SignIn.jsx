@@ -1,4 +1,4 @@
-import React, { useState,useCallback } from 'react';
+import React, { useCallback } from 'react';
 // import api from '../../api'
 import '../css/containers/signin.css';
 import { useHistory } from "react-router-dom";
@@ -14,10 +14,10 @@ export default function SignIn() {
    const history = useHistory()
    
   
-   const {email, password,test} = useSelector(({auth}) => ({
+   const {email, password} = useSelector(({auth}) => ({
     email : auth.login.email,
     password: auth.login.password,
-  }))
+  }),shallowEqual)
 
   
   const setEmail = useCallback((email)=> {

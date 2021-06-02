@@ -5,15 +5,15 @@ import { useHistory } from "react-router-dom";
 import pack from '../css/containers/signup2'
 import api from '../utils/api'
 
-import DaumPostcode from "react-daum-postcode";
-import Modal from '../components/Modal'
+// import DaumPostcode from "react-daum-postcode";
+// import Modal from '../components/Modal'
 import SelectDropDown from '../components/SelectDropDown'
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import back from "../assets/svgs/back.svg";
+// import back from "../assets/svgs/back.svg";
 
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
 import * as authActions from '../store/modules/auth'
-import * as loadingActions from '../store/modules/loading';
+// import * as loadingActions from '../store/modules/loading';
 import FileUploader from '../components/FileUploader';
 
 
@@ -28,7 +28,7 @@ export default function SignUp2() {
     const [bg3List, setBg3List] = useState([])
     // console.log(image)
 
-    const {email,password,passwordCheck,nickname,workKind, bg1, bg2, bg3, image,isLoading} = useSelector(({auth,loading}) => ({
+    const {email,password,passwordCheck,nickname,workKind, bg1, bg2, bg3, image} = useSelector(({auth,loading}) => ({
         email : auth.register.email,
         password: auth.register.password,
         passwordCheck: auth.register.passwordCheck,
@@ -61,9 +61,9 @@ export default function SignUp2() {
       dispatch(authActions.setRegImage({image}))
     },[dispatch])
 
-    const setLoading = useCallback((bool)=> {
-      dispatch(loadingActions.setLoading({bool}))
-    },[dispatch])
+    // const setLoading = useCallback((bool)=> {
+    //   dispatch(loadingActions.setLoading({bool}))
+    // },[dispatch])
 
   useEffect(() => {
       // setLoading(true)
@@ -84,7 +84,7 @@ export default function SignUp2() {
     formData.append('bg1', bg1);
     formData.append('bg2', bg2);
     formData.append('bg3', bg3);
-    const result = api.signup(formData,()=>{
+    api.signup(formData,()=>{
       alert("회원가입 완료")
       history.push('/signin')
     })}
@@ -126,7 +126,7 @@ if(email.length < 1 || password.length < 1) history.push('/signin')
   //   return "로딩중"
     
   // }else{
-  if(email=="" || password =="" ||passwordCheck==""|| nickname =="") {
+  if(email==="" || password ==="" ||passwordCheck===""|| nickname ==="") {
     alert('이전페이지로 돌아가서 다시 해주세요')
     history.push('/signup')
   }

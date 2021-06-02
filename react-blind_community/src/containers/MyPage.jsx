@@ -1,9 +1,10 @@
 import React, { useState,useEffect,useCallback } from "react";
-import { useCookies } from 'react-cookie';
+// import { useCookies } from 'react-cookie';
 import {  useHistory } from "react-router-dom";
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
 import  * as authActions from '../store/modules/auth'
 
+import Cookies from 'js-cookie';
 import Nav from '../components/Nav'
 import Layout from '../components/Layout'
 import Post from "../components/Post";
@@ -20,7 +21,8 @@ import { Button } from 'antd';
 const MyPage = ({ location }) => {
   const dispatch = useDispatch()
   const history = useHistory()
-  const [cookies,setCookies,removeCookies] = useCookies();
+  // const [cookies,setCookies,removeCookies] = useCookies();
+    
   const [nickname, setNickname] = useState('')
   const [password, setPassword] = useState('')
   const [passwordCheck, setPasswordCheck] = useState('')
@@ -77,7 +79,7 @@ const MyPage = ({ location }) => {
       'delete',
       '/auth/signout',
       (data)=>{
-       removeCookies('accessToken')
+        Cookies.remove('accessToken')
         history.push('/signin')
       },
       {}
@@ -91,7 +93,7 @@ const MyPage = ({ location }) => {
 
   useEffect(() => {
     dispatch(authActions.myPageFirstData())
-  }, [])
+  }, [dispatch])
 
 
 
@@ -170,6 +172,7 @@ const MyPage = ({ location }) => {
               like={post.likes}
               comment={post.comment_counts}
               postNo= {post.post_no}
+              key = {post.post_no}
             />)}
           
             <pack.PaginationWrap>
@@ -188,3 +191,4 @@ const MyPage = ({ location }) => {
 };
 
 export default MyPage;
+

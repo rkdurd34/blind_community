@@ -18,6 +18,9 @@ const AdminPaper = ({ history, auth, title }) => {
         region:"등록X",
         is_valid:"등록X"
     })
+        const {users} = useSelector(({admin})=>({
+        users: admin.users,
+    }),shallowEqual)
 
     const setUserData = useCallback((users)=>{
         dispatch(adminActions.setUserData({users}))
@@ -26,14 +29,11 @@ const AdminPaper = ({ history, auth, title }) => {
         dispatch(commonActions.setIsLoading({is_loading}))
     },[dispatch])
 
-    const {users} = useSelector(({admin})=>({
-        users: admin.users,
-    }),shallowEqual)
 
     const handleSetOpenModal = useCallback((data) =>{
         setUserDetail(users.filter(user => user.user_no === data.user_no )[0])
         setOpenModal(true)
-    })
+    },[ users])
     const handleEditButton = useCallback(()=>{
         setIsLoading(true)
         api.customAPI(

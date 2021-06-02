@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 function AuthRoute({ component: Component, render, history, ...rest }) {

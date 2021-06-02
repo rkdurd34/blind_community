@@ -50,7 +50,7 @@ const PostDetail = ({match}) => {
         dispatch(boardActions.setNewComment({comment}))
     },[dispatch])
     const setLoading = useCallback((isLoading)=>{
-      dispatch(loadingActions.setLoading({isLoading}))
+      dispatch(loadingActions.setLoading(isLoading))
   },[dispatch])
 
   const handleLikeBtn = () =>{
@@ -63,13 +63,13 @@ const PostDetail = ({match}) => {
     
   })
   }
-  const handleNewCommentBtn = useCallback( () =>{
+  const handleNewCommentBtn =() =>{
     api.createComment({post_no, comment},(data)=>{
         setNewComment(``)
         // setCommentList([...commentList])
         window.location.reload()
     })
-  })
+  }
   const handleMoreButton =  () =>{
      setCurrentComment(currentComment+1)
       api.customAPI(
@@ -104,7 +104,7 @@ const PostDetail = ({match}) => {
       (data)=> {},
       {params:{ post_no}}
     )
-  },[])
+  },[post_no])
 
   useEffect( ()=>{
     api.postDetail({post_no},  (data)=>{
@@ -116,7 +116,7 @@ const PostDetail = ({match}) => {
         setLoading(false)
     })
   },[like])
-  console.log(postDetail)
+  
   return (
     <Layout>
       <pack.Container>
@@ -150,19 +150,19 @@ const PostDetail = ({match}) => {
             <pack.CommuRight>
               <pack.Views>
                 <pack.SVG>
-                  <object type="image/svg+xml" data={viewIcon} />
+                  <img  src ={viewIcon}type="image/svg+xml" alt={"아이콘"} data={viewIcon} />
                 </pack.SVG>
                 {postDetail.views}
               </pack.Views>
               <pack.Likes>
                 <pack.SVG>
-                  <object type="image/svg+xml" data={heartIcon} />
+                  <img src = {heartIcon} alt={"아이콘"} type="image/svg+xml" data={heartIcon} />
                 </pack.SVG>
                 {postDetail.likes}
               </pack.Likes>
               <pack.Comments>
                 <pack.SVG>
-                  <object type="image/svg+xml" data={commentIcon} />
+                  <img src ={commentIcon} alt={"아이콘"}type="image/svg+xml" data={commentIcon} />
                 </pack.SVG>
                 {commentCount}
               </pack.Comments>
@@ -192,6 +192,8 @@ const PostDetail = ({match}) => {
             handleMoreButton={handleMoreButton} 
             setCommentList={setCommentList}
             canDelete = {postDetail.current_user}
+            commentCount = {commentCount}
+            currentComment = {currentComment}
             />
             
           
@@ -207,17 +209,17 @@ const PostDetail = ({match}) => {
           <pack.Input  
           onChange ={(e)=>setNewComment(e.target.value)}
           placeholder={`댓글을 입력하세요.`}
-          onKeyPress={(e) => { if (e.key == "Enter") handleNewCommentBtn() }}
+          onKeyPress={(e) => { if (e.key === "Enter") handleNewCommentBtn() }}
           value = {comment}
         
            />
           <pack.InputBtn onClick = {handleNewCommentBtn}>
-            <img src={flyIcon}  />
+            <img alt={"아이콘"} src={flyIcon}  />
           </pack.InputBtn>
         </pack.InputWrap>
       </pack.InputContainer>
       
-    </Layout>
+    </Layout> 
   );
 };
 

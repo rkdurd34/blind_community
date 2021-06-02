@@ -1,13 +1,12 @@
 
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 function PublicRoute({ component: Component, render, location, ...rest }) {
 
   const [cookies] = useCookies('accessToken');
   const authenticated = (cookies.accessToken) ? true : false;
-  console.log(location);
-  console.log();
+
   return (
     <Route
       {...rest}

@@ -1,16 +1,16 @@
 import React, { useState,useEffect,useCallback } from "react";
-import { Link,useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import Layout from "../components/Layout";
 import Post from "../components/Post";
 import Pagination from "../components/Pagination2";
 import SearchIcon from "../components/searchIcon";
-import back from "../assets/svgs/back.svg";
+
 
 import pack from '../css/containers/search'
 import { ArrowLeftOutlined} from '@ant-design/icons';
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
-import board, * as boardActions from '../store/modules/board'
+import  * as boardActions from '../store/modules/board'
 
 const PER_PAGE = 10;
 
@@ -33,7 +33,7 @@ const Search = ({ location }) => {
 
   const paginationHandler = current => {
     setCurPage(current);
-    dispatch(boardActions.searchPageData(curPage,searchInput,setTotalPage))
+    dispatch(boardActions.searchPageData(curPage,searchInput,setTotalPage,totalPage))
   };
   const handleSearchButton =  ()=>{
     // setIsSearched(true)
@@ -69,7 +69,7 @@ const Search = ({ location }) => {
           <pack.Input 
           placeholder={`제목을 입력하세요`} 
           onChange={(e)=>setSearchInput(e.target.value)}
-          onKeyPress={(e)=> {if(e.key=="Enter") handleSearchButton()}}
+          onKeyPress={(e)=> {if(e.key==="Enter") handleSearchButton()}}
           />
           <pack.Search
             onClick={handleSearchButton}

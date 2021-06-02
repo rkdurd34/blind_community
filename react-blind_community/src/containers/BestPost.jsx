@@ -15,13 +15,10 @@ import {shallowEqual, useSelector, useDispatch} from 'react-redux'
 import * as boardActions from '../store/modules/board'
 import PaginationComponent from '../components/Pagination2';
 
-
-
 export default function BoardAll() {
     // const history = useHistory()
     const dispatch = useDispatch()
-    // const [cookies,setCookies,removeCookies] = useCookies();
-    
+    // const [cookies,setCookies,removeCookies] = useCookies();    
     const [postTotalCount, setPostTotalCount] = useState();
     const [curPage] = useState(0);
 
@@ -33,8 +30,8 @@ export default function BoardAll() {
         postList: board.postList,
     }),shallowEqual)
     
-    const setCurType = useCallback((curType)=>{
-        dispatch(boardActions.setCurType({curType}))
+    const setPostType = useCallback((curType)=>{
+        dispatch(boardActions.setPostType({curType}))
     },[dispatch])
 
     const setSector = useCallback((sector)=>{
@@ -80,9 +77,9 @@ export default function BoardAll() {
     //      setPostList(data.post_data)
     //      setPostTotalCount(data.total_count)
     //  })
-    }, [])
+    }, [setPostList,setRegion,curType,  curPage,setSector])
     const handleButtonClick = (curType) => {
-        setCurType(curType)
+        setPostType(curType)
         api.customAPI(
             `get`,
             `/board/post/best`,
@@ -128,7 +125,6 @@ export default function BoardAll() {
                 <pack.PostTitle>베스트</pack.PostTitle>
                 <pack.PostList>
                     {postList.map((post,index)=>
-                    <>
                     <Post
                     title={post.title}
                     author={post.nickname}
@@ -137,9 +133,10 @@ export default function BoardAll() {
                     comment={post.comment_counts}
                     postNo = {post.post_no}
                     rank = {index+1}
+                    key = {post.post_no}
                     />
                     
-                    </> 
+                    
                     )}
          
                 </pack.PostList>
@@ -149,6 +146,7 @@ export default function BoardAll() {
                     pageSize={10}
                     onChange={handelPaginationClick}
                     current ={curPage}
+                    
                     />
                 </pack.PaginationWrap>
                 

@@ -1,6 +1,6 @@
 import React,{useEffect, useState,useCallback} from 'react'
-import { useCookies } from 'react-cookie';
-import { useHistory } from "react-router-dom";
+import {  } from 'react-cookie';
+import {  } from "react-router-dom";
 import api from '../utils/api'
 // import DaumPostcode from "react-daum-postcode";
 
@@ -33,8 +33,8 @@ export default function BoardAll() {
         postList: board.postList,
     }),shallowEqual)
     
-    const setCurType = useCallback((curType)=>{
-        dispatch(boardActions.setCurType({curType}))
+    const setPostType = useCallback((curType)=>{
+        dispatch(boardActions.setPostType({curType}))
     },[dispatch])
 
     const setSector = useCallback((sector)=>{
@@ -62,9 +62,9 @@ export default function BoardAll() {
          setPostList(data.post_data)
          setPostTotalCount(data.total_count)
      })
-    }, [])
+    }, [curPage, curType, setPostList, setRegion,setSector])
     const handleButtonClick = (curType) => {
-        setCurType(curType)
+        setPostType(curType)
         api.postListAll({post_type:curType,page:0}, (data)=>{
             setCurPage(0)
             setPostTotalCount(data.total_count)
@@ -92,8 +92,8 @@ export default function BoardAll() {
             <pack.ListSection>
                 <pack.PostTitle>전체 게시글</pack.PostTitle>
                 <pack.PostList>
-                    {postList.map((post)=>
-                    <>
+                    {postList.map((post,index)=>
+                    
                     <Post
                     title={post.title}
                     author={post.nickname}
@@ -101,9 +101,10 @@ export default function BoardAll() {
                     like={post.likes}
                     comment={post.comment_counts}
                     postNo = {post.post_no}
+                    key = {post.post_no}
                     />
                     
-                    </> 
+                    
                     )}
          
                 </pack.PostList>
@@ -113,6 +114,7 @@ export default function BoardAll() {
                     pageSize={10}
                     onChange={handelPaginationClick}
                     current ={curPage}
+                    
                     />
                 </pack.PaginationWrap>
                 

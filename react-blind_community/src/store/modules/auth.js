@@ -1,5 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
-import { get, Record } from "immutable";
+import { Record } from "immutable";
 import api from '../../utils/api';
 // const INCREMENT = 'test/INCREMENT';
 // const DECREMENT = 'test/DECREMENT'; //명시용이라서 어떻게 써도 상관은없음
@@ -63,7 +63,7 @@ export const myPageSecondData = (curPage, setTotalPage) => async (dispatch, getS
     "get",
     '/auth/mypage',
     (data) => {
-      console.log(data,'ㅁㄴㅇㅁㄴㅇㅁㄴㅇ');
+      console.log(data, 'ㅁㄴㅇㅁㄴㅇㅁㄴㅇ');
       dispatch(setMySecond({ second: data.post_list }));
       setTotalPage(data.total_count);
     },

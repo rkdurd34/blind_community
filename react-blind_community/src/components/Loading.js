@@ -4,6 +4,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 import pack from '../css/components/loading';
 import { Spin } from 'antd';
 export default function Loading() {
+
   const { isLoading } = useSelector(({ loading }) => ({
     isLoading: loading.isLoading
   }), shallowEqual);

@@ -10,22 +10,22 @@ import api from '../utils/api';
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
 import * as boardActions from '../store/modules/board'
 
-const CreatePage = ({  }) => {
+const CreatePage = () => {
     const dispatch = useDispatch()
     const history = useHistory()
-    const {type, title, content, region, sector, curType} = useSelector(({board})=> ({
+    const { title, content, region, sector, post_type} = useSelector(({board})=> ({
         type: board.newPost.type,
         title: board.newPost.title,
         content: board.newPost.content,
         region: board.region,
         sector: board.sector,
-        curType: board.curType
+        post_type: board.post_type
     }),shallowEqual)
     
-    if (region.no==="" || sector.no==="" ) history.push('/board/all')
+    if (region.no === "" || sector.no === "" ) history.push('/board/all')
 
-    const setCurType = useCallback((curType)=>{
-        dispatch(boardActions.setCurType({curType}))
+    const setPostType = useCallback((post_type)=>{
+        dispatch(boardActions.setPostType({post_type}))
     },[dispatch])
 
     // const setSector = useCallback((sector)=>{
@@ -48,7 +48,7 @@ const CreatePage = ({  }) => {
         api.createPost({
             title,
             content,
-            curType
+            post_type
         },
         (data)=>{
             history.push(`/board/all`)
@@ -63,8 +63,8 @@ const CreatePage = ({  }) => {
     <Layout>
       <pack.Container>
         <pack.ButtonSection>
-            <TypeButton subTitle="내 지역" title ={region.bname} picked ={curType === "region" ? true : false} onClick={()=> setCurType("region")}/>
-            <TypeButton subTitle="내 업종" title= {sector.name} picked = {curType=== "sector" ? true : false} onClick={()=>  setCurType("sector")}/>
+            <TypeButton subTitle="내 지역" title ={region.bname} picked ={post_type === "region" ? true : false} onClick={()=> setPostType("region")}/>
+            <TypeButton subTitle="내 업종" title= {sector.name} picked = {post_type=== "sector" ? true : false} onClick={()=>  setPostType("sector")}/>
         </pack.ButtonSection>
         <pack.Title placeholder={`제목을 입력해주세요`} onChange={(e)=>setNewPostTitle(e.target.value)} />
         <pack.Content placeholder={`내용을 입력해주세요`} onChange={(e)=>setNewPostContent(e.target.value)}/>

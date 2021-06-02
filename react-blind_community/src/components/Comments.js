@@ -8,7 +8,7 @@ import pack from '../css/containers/postdetail';
 // const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat&noinfo`;
 
 
-const Comments = ({ list, handleMoreButton, setCommentList, canDelete }) => {
+const Comments = ({ list, handleMoreButton, setCommentList, canDelete, commentCount, currentComment }) => {
   // const post_no = 1;
   const [loading, setLoading] = useState(false);
   // const [data, setData] = useState([]);
@@ -44,12 +44,12 @@ const Comments = ({ list, handleMoreButton, setCommentList, canDelete }) => {
 
   };
   const loadMore =
-    !loading ? (
+    !loading && commentCount > 4 && currentComment * 5 < commentCount ? (
       <pack.MoreWrap>
         <Button onClick={onLoadMore}>더보기</Button>
       </pack.MoreWrap>
     ) : null;
-  console.log(list);
+
   return (
     <List
       className="demo-loadmore-list"
@@ -70,8 +70,8 @@ const Comments = ({ list, handleMoreButton, setCommentList, canDelete }) => {
                 avatar={
                   <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                 }
-                title={<spin>{item.text}</spin>}
-                description={item.create_datetime}
+                title={<span>{item.text}</span>}
+                description={item.nickname + " | " + item.create_datetime}
               />
               {/* <div>content</div> */}
             </Skeleton>

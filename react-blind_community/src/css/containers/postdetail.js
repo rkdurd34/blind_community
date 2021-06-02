@@ -150,13 +150,14 @@ const More = styled.button`
 `;
 
 const InputContainer = styled.div`
-  width: 100%;
+  width: 100vw;
   height:8%;
   margin-bottom: 2px;
   position: fixed;
   bottom: 0;
   left: 0;
   z-index: 10;
+  background: #f8f9fa;
 `;
 
 const InputWrap = styled.div`
@@ -164,7 +165,7 @@ const InputWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 960px;
+  /* max-width: 960px; */
   height:100%;
   margin: 0 auto;
   border: 2px solid #ebebeb;
@@ -182,7 +183,7 @@ const Input = styled.input`
 `;
 
 const InputBtn = styled.button`
-padding:0;
+  padding:0;
   width: 15%;
   height: 100%;
   border: none;
@@ -190,9 +191,13 @@ padding:0;
   outline: none;
   background: #fff;
   font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index:100;
+  background: #f8f9fa;
   img{
-    width:30%;
+    height:30%
   }
 `;
 const LikeBtn = styled.div`

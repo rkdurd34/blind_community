@@ -1,19 +1,19 @@
-import React, { useState,useEffect,useCallback } from "react";
-import { Link,useHistory } from "react-router-dom";
+import React, { useState,useEffect } from "react";
+
 
 import Layout from "../components/Layout";
 
-import styled from "styled-components";
+
 import TypeButton from '../components/TypeButton'
 import pack from '../css/containers/createpost'
 import api from '../utils/api';
-import {shallowEqual, useSelector, useDispatch} from 'react-redux'
-import * as boardActions from '../store/modules/board'
-import PostDetail from './PostDetail';
+import {shallowEqual, useSelector,} from 'react-redux'
+
+
 
 const PostEdit = ({ location,history,match }) => {
     const post_no = match.params.no
-    const dispatch = useDispatch()
+    
     // const history = useHistory()
 
     const [title,setTitle] = useState(`ㅂㅈㄷ`)
@@ -23,9 +23,9 @@ const PostEdit = ({ location,history,match }) => {
     }),shallowEqual)
     // if (region.no==="" || sector.no==="" ) history.push('/board/all')
 
-    const setEditPost = useCallback((editPost)=>{
-        dispatch(boardActions.setEditPost({editPost}))
-    },[dispatch])
+    // const setEditPost = useCallback((editPost)=>{
+    //     dispatch(boardActions.setEditPost({editPost}))
+    // },[dispatch])
     
     // const setNewPostTitle = useCallback((title)=>{
     //     dispatch(boardActions.setNewPostTitle({title}))

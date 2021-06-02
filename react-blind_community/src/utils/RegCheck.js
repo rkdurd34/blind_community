@@ -1,5 +1,4 @@
 const check = {
-
   password(password, level = 3) {
     let regExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
     switch (level) {
@@ -8,6 +7,8 @@ const check = {
         break;
       case 2:
         regExp = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+        break;
+      default:
         break;
     }
     return regExp.test(password);
@@ -21,5 +22,5 @@ const check = {
     return regExp.test(phone);
   }
 
-}
-export default check
+};
+export default check;

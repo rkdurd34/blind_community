@@ -53,8 +53,8 @@ const Emo = styled.span`
 //Link로 넘길 때 post_id 넣어줘야 하니까 props로 postId 넣어주기
 const Post = ({ title, author, createDate, like, comment, rank,postNo}) => {
   return (
-    <Link to={`/board/detail/${postNo}`} >
-      <Container>
+    <Link to={`/board/detail/${postNo}`} key={postNo}>
+      <Container key ={postNo}>
         <Title>
           {rank ? <Rank>{rank}</Rank> : null}
           {title}
@@ -71,11 +71,11 @@ const Post = ({ title, author, createDate, like, comment, rank,postNo}) => {
           <Right>
             <Span>
               <Emo>
-                <object type="image/svg+xml" data={heartIcon} />
+                <img alt ="하트"label = "123" type="image/svg+xml" src={heartIcon} />
               </Emo>
               {like}
               <Emo>
-                <object type="image/svg+xml" data={commentIcon} />
+                <img alt = "뷰"label = "123" type="image/svg+xml" src={commentIcon} />
               </Emo>
               {comment}
             </Span>

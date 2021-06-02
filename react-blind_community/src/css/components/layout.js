@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 const Wrapper = styled.div`
-width:100%;
+width:100vw;
 height:100%;
 display: flex;
 flex-direction: column;
@@ -11,7 +11,10 @@ align-items: center;
 const Container = styled.div`
   display: flex;
   height: max-content;
-  width: 375px;
+  width: 100vw;
+  max-width:600px;
+  min-width: 320px;
+  /* min-width:320px; */
   background-color:#F8F9FA;
   flex-direction:column;
   min-height:90vh;
@@ -22,10 +25,12 @@ const Container = styled.div`
   }
 `;
 const Header = styled.div`
-width:100%;
+width:100vw;
 height:6rem;
+
 display:flex;
 flex-wrap:wrap;
+
 .left{
   width:60%;
   height:100%;
@@ -40,7 +45,7 @@ flex-wrap:wrap;
   
   justify-content:center;
   align-items:center;
-  margin-right: ${props => props.display ? "-1rem" : 0};
+  margin-right: ${props => props.show ? "-1rem" : 0};
   }
   
 }
@@ -64,22 +69,22 @@ flex-wrap:wrap;
 `;
 
 const BackButton = styled.div`
-  display: ${props => props.display ? "flex" : "none"};
+  display: ${props => props.show ? "flex" : "none"};
   width:15%;
   height:60%;
   font-size:1.5rem;
   
   justify-content:center;
   align-items:center;
-  margin-right: ${props => props.display ? "-1rem" : 0};
+  margin-right: ${props => props.show ? "-10%" : 0};
 `;
 const Logo = styled.div`
-  display: ${props => props.display ? "flex" : "none"};
-  margin-left:${props => props.display ? "0.5rem" : 0};
+  display: ${props => props.show ? "flex" : "none"};
+  margin-left:${props => props.show ? "10%" : 0};
   width:70%;
   height:60%;
   font-size:2rem;
-  justify-content:center;
+  justify-content:flex-start;
   align-items:center;
   font-weight:900;
   cursor: pointer;
@@ -88,7 +93,7 @@ const Logo = styled.div`
 
 `;
 const SearchButton = styled.div`
-  display: ${props => props.display ? "flex" : "none"};
+  display: ${props => props.show ? "flex" : "none"};
   width:33%;
   height:50%;
   justify-content:center;
@@ -97,7 +102,7 @@ const SearchButton = styled.div`
   cursor: pointer;
 `;
 const MyPageButton = styled.div`
-  display: ${props => props.display ? "flex" : "none"};
+  display: ${props => props.show ? "flex" : "none"};
   justify-content:center;
   align-items:center;
   width:33%;
@@ -107,7 +112,7 @@ const MyPageButton = styled.div`
   cursor: pointer;
 `;
 const PostButton = styled.div`
-  display: ${props => props.display ? "flex" : "none"};
+  display: ${props => props.show ? "flex" : "none"};
   justify-content:center;
   align-items:center;
   width:33%;

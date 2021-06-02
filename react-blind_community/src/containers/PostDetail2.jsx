@@ -56,7 +56,7 @@ const PostDetail = ({match}) => {
     api.customAPI(
       `get`,
       `/board/post/views`,
-      (data)=> console.log('호잇'),
+      (data)=> {},
       {params:{ post_no}}
     )
   },[])

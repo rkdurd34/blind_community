@@ -21,7 +21,7 @@ export default function TypeButton({ subTitle, title, picked, onClick }) {
 
 Button.defaultProps = {
   title: ``,
-  subTitle: ``
+  subtitle: ``
 };;
 // TypeButton.defaultProps = {
 //   title: ``,

@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import { Route, Redirect } from 'react-router-dom';
 
 function AdminPrivate({ component: Component, render, history, ...rest }) {
 

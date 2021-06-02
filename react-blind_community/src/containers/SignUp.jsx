@@ -1,14 +1,14 @@
-import React, { useState,useCallback } from 'react';
+import React, { useCallback } from 'react';
 import '../css/containers/signin.css';
 import { useHistory } from "react-router-dom";
-import api from '../utils/api'
+
 import AuthInput from '../components/AuthInput.js'
 import pack from '../css/containers/signup'
 import check from '../utils/RegCheck'
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
 import * as authActions from '../store/modules/auth'
-import back from "../assets/svgs/back.svg";
+
 
 export default function SignUp() {
 
@@ -37,6 +37,13 @@ export default function SignUp() {
       dispatch(authActions.setRegNickname({nickname}))
   },[dispatch])
 
+  // const fetchData = useCallback(() => {
+  //   dispatch(eventActions.getEventForm(event_no));
+  // }, [dispatch, event_no])
+
+  // useEffect(()=>{
+  //     fetchData();
+  // },[fetchData])
   
   const handleSignUp = async (e) => {
       if (passwordCheck !== password){

@@ -1,8 +1,6 @@
-import React,{useEffect, useState,useCallback} from 'react'
+import React,{useEffect} from 'react'
 import {  } from 'react-cookie';
 import {  } from "react-router-dom";
-import api from '../utils/api'
-// import DaumPostcode from "react-daum-postcode";
 
 import Layout from '../components/Layout'
 import Banner from '../components/Banner';
@@ -20,80 +18,43 @@ import PaginationComponent from '../components/Pagination2';
 export default function BoardAll() {
     // const history = useHistory()
     const dispatch = useDispatch()
-    // const [cookies,setCookies,removeCookies] = useCookies();
-    
-    const [postTotalCount, setPostTotalCount] = useState();
-    const [curPage, setCurPage] = useState(0);
 
-    
-    const {curType, sector,region,postList} = useSelector(({board,auth})=> ({
-        curType: board.curType,
+    const {post_type,posts, sector,region,cur_page,total_count} = useSelector(({board,auth})=> ({
+        post_type: board.post_type,
         sector: board.sector,
         region: board.region,
         postList: board.postList,
+        posts: board.board_all.posts,
+        cur_page: board.board_all.cur_page,
+        total_count: board.board_all.total_count
     }),shallowEqual)
     
-    const setPostType = useCallback((curType)=>{
-        dispatch(boardActions.setPostType({curType}))
-    },[dispatch])
-
-    const setSector = useCallback((sector)=>{
-        dispatch(boardActions.setSector({sector}))
-    },[dispatch])
-
-    const setRegion = useCallback((region)=>{
-        dispatch(boardActions.setRegion({region}))
-    },[dispatch])
-
-    const setPostList = useCallback((postList)=>{
-        dispatch(boardActions.setPostList({postList}))
-    },[dispatch])
-
     useEffect(() => {
-     api.postListAll({post_type:curType,page:curPage}, (data)=>{
-         setSector({
-            no:data.user_data.sector_no,
-            name: data.user_data.name
-         })
-         setRegion({
-             no:data.user_data.region_no,
-             bname:data.user_data.bname
-         })
-         setPostList(data.post_data)
-         setPostTotalCount(data.total_count)
-     })
-    }, [curPage, curType, setPostList, setRegion,setSector])
-    const handleButtonClick = (curType) => {
-        setPostType(curType)
-        api.postListAll({post_type:curType,page:0}, (data)=>{
-            setCurPage(0)
-            setPostTotalCount(data.total_count)
-            setPostList(data.post_data)
-            
-        })
-    }
-    const handelPaginationClick = (current) =>{
-        setCurPage(current);
-        api.postListAll({post_type:curType,page:current-1}, (data)=>{
-            setPostTotalCount(data.total_count)
-            setPostList(data.post_data)
-            
-        })
-    }
-    
+     dispatch(boardActions.boardAllPageData('region',cur_page))
+    }, [dispatch,cur_page])
+  
     return (
         <Layout BackButton={false}>
             <Banner/>
         
             <pack.ButtonSection>
-                <TypeButton subTitle="내 지역" title ={region.bname} picked ={curType === "region" ? true : false} onClick={()=> handleButtonClick("region")}/>
-                <TypeButton subTitle="내 업종" title= {sector.name} picked = {curType=== "sector" ? true : false} onClick={()=>  handleButtonClick("sector")}/>
+                <TypeButton 
+                subTitle="내 지역" 
+                title ={region.bname} 
+                picked ={post_type === "region" ? true : false} 
+                onClick={()=>dispatch(boardActions.boardAllPageData('region',cur_page))}
+                />
+                <TypeButton 
+                subTitle="내 업종" 
+                title= {sector.name} 
+                picked = {post_type=== "sector" ? true : false} 
+                onClick={()=>dispatch(boardActions.boardAllPageData('sector',cur_page))}
+                />
             </pack.ButtonSection>
             <pack.ListSection>
                 <pack.PostTitle>전체 게시글</pack.PostTitle>
                 <pack.PostList>
-                    {postList.map((post,index)=>
-                    
+                    {posts.map((post,index)=>
                     <Post
                     title={post.title}
                     author={post.nickname}
@@ -103,18 +64,15 @@ export default function BoardAll() {
                     postNo = {post.post_no}
                     key = {post.post_no}
                     />
-                    
-                    
                     )}
          
                 </pack.PostList>
                 <pack.PaginationWrap>
                     <PaginationComponent
-                    total={postTotalCount}
+                    total={total_count}
                     pageSize={10}
-                    onChange={handelPaginationClick}
-                    current ={curPage}
-                    
+                    onChange={(current)=>dispatch(boardActions.boardAllPageData(post_type,current-1))}
+                    current ={cur_page+1}
                     />
                 </pack.PaginationWrap>
                 

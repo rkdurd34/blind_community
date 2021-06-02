@@ -8,7 +8,9 @@ const configure = () => {
   if (process.env.NODE_ENV === 'production')
     return createStore(modules, applyMiddleware());
   else
-    return createStore(modules, composeWithDevTools(applyMiddleware(ReduxThunk, logger)));
+    return createStore(modules, composeWithDevTools(applyMiddleware(ReduxThunk
+      // , logger
+    )));
 };
 
 export default configure;

@@ -8,6 +8,8 @@ const SET_POST_TYPE = "board/SET_POST_TYPE";
 const SET_SECTOR = "board/SET_SECTOR";
 const SET_REGION = "board/SET_REGION";
 const SET_POST_LIST = "board/SET_POST_LIST";
+const SET_BOARD_ALL = 'board/SET_BOARD_ALL';
+
 const SET_POST_DETAIL = "board/SET_POST_DETAIL";
 const SET_COMMENT_LIST = "board/SET_COMMENT_LIST";
 const SET_NEW_POST_TITLE = "board/SET_NEW_POST_TITLE";
@@ -23,6 +25,8 @@ export const setPostType = createAction(SET_POST_TYPE);
 export const setSector = createAction(SET_SECTOR);
 export const setRegion = createAction(SET_REGION);
 export const setMain = createAction(SET_MAIN_POST);
+
+export const setBoardAll = createAction(SET_BOARD_ALL);
 
 export const setPostList = createAction(SET_POST_LIST);
 export const setPostDetail = createAction(SET_POST_DETAIL);
@@ -99,9 +103,42 @@ export const mainPageData = (post_type) => async (dispatch, getState) => {
     throw (e);
   }
 };
-export const boardAllPageData = (post_type) => async (dispatch, getState) => {
+export const boardAllPageData = (post_type, page) => async (dispatch, getState) => {
   try {
-
+    dispatch(loadingActions.setLoading(true));
+    dispatch(setPostType({ post_type: post_type }));
+    await api.customAPI(
+      `get`,
+      `/board/all`,
+      (data) => {
+        dispatch(setSector({
+          sector: {
+            no: data.user_data.sector_no,
+            name: data.user_data.name
+          }
+        }));
+        dispatch(setRegion({
+          region: {
+            no: data.user_data.region_no,
+            bname: data.user_data.bname
+          }
+        }));
+        dispatch(setBoardAll({
+          board_all: {
+            posts: data.post_data,
+            cur_page: page,
+            total_count: data.total_count
+          }
+        }));
+      },
+      {
+        params: {
+          post_type: getState().board.post_type,
+          page: page,
+        }
+      }
+    );
+    dispatch(loadingActions.setLoading(false));
   } catch (e) {
     throw (e);
   }
@@ -122,7 +159,12 @@ const initialState = Record({
     best: List(),
     all: List()
   },
-  board_all: List(),
+  board_all: {
+    posts: List(),
+    cur_page: 0,
+    total_count: 0
+  },
+  post_detail:{},
   postList: List(),
   postDetail: {},
   commentList: List(),
@@ -154,6 +196,8 @@ export default handleActions({
   [SET_SECTOR]: (state, { payload }) => state.set('sector', payload.sector),
   [SET_REGION]: (state, { payload }) => state.set('region', payload.region),
   [SET_MAIN_POST]: (state, { payload }) => state.set('main', payload.main),
+  [SET_BOARD_ALL]: (state, { payload }) => state.set('board_all', payload.board_all),
+
   [SET_POST_LIST]: (state, { payload }) => state.set('postList', payload.postList),
   [SET_POST_DETAIL]: (state, { payload }) => state.set('postDetail', payload.postDetail),
   [SET_COMMENT_LIST]: (state, { payload }) => { return state.set('commentList', payload.commentList); },

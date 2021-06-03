@@ -9,6 +9,7 @@ const SET_SECTOR = "board/SET_SECTOR";
 const SET_REGION = "board/SET_REGION";
 const SET_POST_LIST = "board/SET_POST_LIST";
 const SET_BOARD_ALL = 'board/SET_BOARD_ALL';
+const SET_POST_DETAIL_2 = 'board/SET_POST_DETAIL_2';
 
 const SET_POST_DETAIL = "board/SET_POST_DETAIL";
 const SET_COMMENT_LIST = "board/SET_COMMENT_LIST";
@@ -27,7 +28,7 @@ export const setRegion = createAction(SET_REGION);
 export const setMain = createAction(SET_MAIN_POST);
 
 export const setBoardAll = createAction(SET_BOARD_ALL);
-
+export const setPostDetail2 = createAction(SET_POST_DETAIL_2);
 export const setPostList = createAction(SET_POST_LIST);
 export const setPostDetail = createAction(SET_POST_DETAIL);
 export const setCommentList = createAction(SET_COMMENT_LIST);
@@ -143,6 +144,91 @@ export const boardAllPageData = (post_type, page) => async (dispatch, getState) 
     throw (e);
   }
 };
+export const postDetailPageData = (type, { post_no, newComment, setNewComment }) => async (dispatch, getState) => {
+  try {
+    dispatch(loadingActions.setLoading(true));
+    switch (type) {
+      case 'first': {
+        await api.customAPI(
+          `get`,
+          `/board/post/detail`,
+          (data) => {
+            dispatch(setPostDetail2({
+              post_detail: {
+                title: data.post_detail.title,
+                nickname: data.post_detail.nickname,
+                content_text: data.post_detail.content_text,
+                comment_count: data.comments_count,
+                bname: data.post_detail.bname,
+                name: data.post_detail.name,
+                views: data.post_detail.views,
+                likes: data.post_detail.likes,
+                liked: data.post_detail.liked,
+                can_edit: data.post_detail.can_edit,
+                current_user: data.post_detail.current_user,
+                comment_list: data.comments,
+                current_comment: 1,
+                create_datetime: data.post_detail.create_datetime
+              }
+            }));
+            // if (data.post_detail.liked === 1) { setLike(true); } else { setLike(false); }
+          },
+          { params: { post_no } }
+        );
+        break;
+      }
+      case "more_comment": {
+        await api.customAPI(
+          `get`,
+          `/board/post/comment`,
+          (data) => {
+            dispatch(setPostDetail2({
+              post_detail: {
+                ...getState().board.post_detail,
+                comment_list: [...getState().board.post_detail.comment_list, ...data]
+              }
+            }));
+            dispatch(setPostDetail2({
+              post_detail: {
+                ...getState().board.post_detail,
+                current_comment: getState().board.post_detail.current_comment + 1
+              }
+            }));
+          },
+          { params: { post_no: post_no, page: getState().board.post_detail.current_comment } }
+        );
+        break;
+      }
+      case "new_comment": {
+        await api.customAPI(
+          `post`,
+          `/board/post/comment`,
+          (data) => { setNewComment(''); },
+          { data: { post_no, comment: newComment } }
+        );
+      }
+      case "click_like": {
+        await api.customAPI(
+          `post`,
+          `/board/post/like`,
+          () => {
+            dispatch(setPostDetail2({
+              post_detail: {
+                ...getState().board.post_detail,
+                liked: !getState().board.post_detail.liked
+              }
+            }));
+          },
+          { data: { post_no } }
+        );
+      }
+    }
+
+    dispatch(loadingActions.setLoading(false));
+  } catch (e) {
+    throw (e);
+  }
+};
 
 
 const initialState = Record({
@@ -164,7 +250,22 @@ const initialState = Record({
     cur_page: 0,
     total_count: 0
   },
-  post_detail:{},
+  post_detail: {
+    title: ``,
+    nickname: ``,
+    content_text: ``,
+    comment_count: 0,
+    bname: ``,
+    name: ``,
+    views: 0,
+    likes: 0,
+    liked: 0,
+    can_edit: 0,
+    current_user: ``,
+    comment_list: List(),
+    current_comment: 1,
+    create_datetime: ``
+  },
   postList: List(),
   postDetail: {},
   commentList: List(),
@@ -197,7 +298,7 @@ export default handleActions({
   [SET_REGION]: (state, { payload }) => state.set('region', payload.region),
   [SET_MAIN_POST]: (state, { payload }) => state.set('main', payload.main),
   [SET_BOARD_ALL]: (state, { payload }) => state.set('board_all', payload.board_all),
-
+  [SET_POST_DETAIL_2]: (state, { payload }) => state.set('post_detail', payload.post_detail),
   [SET_POST_LIST]: (state, { payload }) => state.set('postList', payload.postList),
   [SET_POST_DETAIL]: (state, { payload }) => state.set('postDetail', payload.postDetail),
   [SET_COMMENT_LIST]: (state, { payload }) => { return state.set('commentList', payload.commentList); },

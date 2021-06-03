@@ -2,36 +2,19 @@ import React, { useState } from 'react';
 import { List, Avatar, Button, Skeleton } from 'antd';
 import api from '../utils/api';
 import pack from '../css/containers/postdetail';
-// import reqwest from 'reqwest';
+import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 
 // const count = 3;
 // const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat&noinfo`;
 
 
 const Comments = ({ list, handleMoreButton, setCommentList, canDelete, commentCount, currentComment }) => {
-  // const post_no = 1;
-  const [loading, setLoading] = useState(false);
-  // const [data, setData] = useState([]);
-  // const [list,setList] = useState([])
 
-  // useEffect(() => {
-  //   api.customAPI(
-  //     `get`,
-  //     `/board/post/detail`,
-  //     (data) => {
-  //       // setData(data.comments.map(item=>item.title= item.text));
-  //       // setList(data.comments.map(item=>({...item, title:item.text })));
-  //       // console.log(data)
-  //       setLoading(false);
-  //     },
-  //     { params: { post_no } }
-  //   );
-  // }, []);
-  const onLoadMore = () => {
-    setLoading(true);
-    handleMoreButton();
-    setLoading(false);
-  };
+  // const [loading, setLoading] = useState(false);
+  const { loading } = useSelector(({ loading }) => ({
+    loading: loading.isLoading
+  }), shallowEqual);
+
   const handleDeleteBtn = (no) => {
     api.customAPI(
       `delete`,
@@ -46,7 +29,7 @@ const Comments = ({ list, handleMoreButton, setCommentList, canDelete, commentCo
   const loadMore =
     !loading && commentCount > 4 && currentComment * 5 < commentCount ? (
       <pack.MoreWrap>
-        <Button onClick={onLoadMore}>더보기</Button>
+        <Button onClick={() => handleMoreButton()}>더보기</Button>
       </pack.MoreWrap>
     ) : null;
 

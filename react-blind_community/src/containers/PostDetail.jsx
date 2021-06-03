@@ -17,75 +17,21 @@ import api from '../utils/api';
 import pack from '../css/containers/postdetail'
 
 import {shallowEqual, useSelector, useDispatch} from 'react-redux'
-import * as boardActions from '../store/modules/board'
+import board, * as boardActions from '../store/modules/board'
 import  * as loadingActions from '../store/modules/loading'
 
 const PostDetail = ({match}) => {
     const post_no = match.params.no
     const dispatch = useDispatch()
     const history = useHistory()
-    const [like, setLike] = useState(false)
-    const [currentComment, setCurrentComment] = useState(1)
-    const {postDetail,commentList,commentCount,comment} = useSelector(({board})=>({
-        postDetail: board.postDetail,
-        region_name: board.region.bname,
-        commentList:board.commentList,
-        commentCount:board.commentCount,
-        comment: board.newComment.comment
+    const [newComment, setNewComment]= useState(``)
+    const {post_detail} = useSelector(({board})=>({
+        post_detail:board.post_detail
     }),shallowEqual)
-    
-    const setPostDetail = useCallback((postDetail)=>{
-        dispatch(boardActions.setPostDetail({postDetail}))
-    },[dispatch])
-
     const setCommentList = useCallback((commentList)=>{
         dispatch(boardActions.setCommentList({commentList}))
     },[dispatch])
 
-    const setCommentCount = useCallback((commentCount)=>{
-        dispatch(boardActions.setCommentCount({commentCount}))
-    },[dispatch])
-
-    const setNewComment = useCallback((comment)=>{
-        dispatch(boardActions.setNewComment({comment}))
-    },[dispatch])
-    const setLoading = useCallback((isLoading)=>{
-      dispatch(loadingActions.setLoading(isLoading))
-  },[dispatch])
-
-  const handleLikeBtn = () =>{
-    api.postLike(post_no, ()=>{
-      if (like){
-        setLike(false)
-      }else if(like === false){
-        setLike(true)
-      }
-    
-  })
-  }
-  const handleNewCommentBtn =() =>{
-    api.createComment({post_no, comment},(data)=>{
-        setNewComment(``)
-        // setCommentList([...commentList])
-        window.location.reload()
-    })
-  }
-  const handleMoreButton =  () =>{
-     setCurrentComment(currentComment+1)
-      api.customAPI(
-        `get`,
-        `/board/post/comment`,
-        (data)=>{
-          // console.log(data,"asdjaskldmaskldmklasmdklamskldmalksmdlkamslkdmlaksmdklasmd여기양",currentComment)
-          // if (data.length < 1) setCurrentComment(currentComment-1)
-          setCommentList([...commentList,...data])
-          // setCommentList([...commentList,...data.filter(comment => commentList.filter())])
-
-        },
-        {params:{post_no, page:currentComment}}
-
-      )
-  }
   const handleDeleteBtn = () =>{
     if (window.confirm('삭제하실거임 ?')){
       api.customAPI(
@@ -95,7 +41,6 @@ const PostDetail = ({match}) => {
         {params:{post_no}}
       )
     }
-    
   }
   useEffect(()=>{
     api.customAPI(
@@ -107,27 +52,20 @@ const PostDetail = ({match}) => {
   },[post_no])
 
   useEffect( ()=>{
-    api.postDetail({post_no},  (data)=>{
-        setLoading(true)
-        if (data.post_detail.liked === 1)  {setLike(true)} else{ setLike(false)}
-        setPostDetail(data.post_detail)
-        setCommentList(data.comments)
-        setCommentCount(data.comments_count)
-        setLoading(false)
-    })
-  },[like])
-  
+    dispatch(boardActions.postDetailPageData("first",{post_no}))
+  },[dispatch, post_no,post_detail.liked])
+  console.log(post_detail)
   return (
     <Layout>
       <pack.Container>
         <pack.Post>
           <pack.CurType>
-            <div className = "type">{(postDetail.bname != null 
-            ? `내 지역 | ${postDetail.bname}` 
-            : `내 업종 | ${postDetail.name}`
+            <div className = "type">{(post_detail.bname != null 
+            ? `내 지역 | ${post_detail.bname}` 
+            : `내 업종 | ${post_detail.name}`
             )}
             </div>
-            {postDetail.can_edit === 1 
+            {post_detail.can_edit === 1 
             ? <div className="postEdit">
               <span><Link to ={`/board/edit/${post_no}`}>수정</Link></span>
               <span onClick={handleDeleteBtn}>삭제</span>
@@ -135,16 +73,16 @@ const PostDetail = ({match}) => {
             
             </pack.CurType>
           <pack.PostTitle>
-            {postDetail.title}
+            {post_detail.title}
           </pack.PostTitle>
           <pack.ABDContainer>
-          <pack.Author>작성자: {postDetail.nickname}</pack.Author>
+          <pack.Author>작성자: {post_detail.nickname}</pack.Author>
             {/* <pack.Bar>|</pack.Bar> */}
             
-            <pack.Date>{postDetail.create_datetime}</pack.Date>
+            <pack.Date>{post_detail.create_datetime}</pack.Date>
           </pack.ABDContainer>
           <pack.Content> 
-            {postDetail.content_text}
+            {post_detail.content_text}
           </pack.Content>
           <pack.CommuContainer>
             <pack.CommuRight>
@@ -152,48 +90,40 @@ const PostDetail = ({match}) => {
                 <pack.SVG>
                   <img  src ={viewIcon}type="image/svg+xml" alt={"아이콘"} data={viewIcon} />
                 </pack.SVG>
-                {postDetail.views}
+                {post_detail.views}
               </pack.Views>
               <pack.Likes>
                 <pack.SVG>
                   <img src = {heartIcon} alt={"아이콘"} type="image/svg+xml" data={heartIcon} />
                 </pack.SVG>
-                {postDetail.likes}
+                {post_detail.likes}
               </pack.Likes>
               <pack.Comments>
                 <pack.SVG>
                   <img src ={commentIcon} alt={"아이콘"}type="image/svg+xml" data={commentIcon} />
                 </pack.SVG>
-                {commentCount}
+                {post_detail.comment_count}
               </pack.Comments>
             </pack.CommuRight>
-            <pack.LikeBtn onClick={handleLikeBtn} clicked= {like}>
+            <pack.LikeBtn 
+            onClick={()=>dispatch(boardActions.postDetailPageData('click_like',{post_no}))} 
+            clicked= {post_detail.liked}>
             <Button type="primary">
               <HeartOutlined />
               <span>공감</span>
               </Button>
-              {/* <pack.SVG>
-              <HeartOutlined />
-              </pack.SVG> */}
-              
             </pack.LikeBtn>
           </pack.CommuContainer>
         </pack.Post>
         <pack.CommentContainer>
-        <pack.CommentCnt>댓글 {commentCount}</pack.CommentCnt>
-        {/* {commentList.map((comment)=>
-        <Comment
-            author = {comment.user_no}
-            createDate = {comment.create_datetime}
-            content = {comment.text}
-            />)} */}
+        <pack.CommentCnt>댓글 {post_detail.comment_count}</pack.CommentCnt>
             <Comments 
-            list ={commentList} 
-            handleMoreButton={handleMoreButton} 
+            list ={post_detail.comment_list} 
+            handleMoreButton={()=>dispatch(boardActions.postDetailPageData("more_comment",{post_no}))} 
             setCommentList={setCommentList}
-            canDelete = {postDetail.current_user}
-            commentCount = {commentCount}
-            currentComment = {currentComment}
+            canDelete = {post_detail.current_user}
+            commentCount = {post_detail.comment_count}
+            currentComment = {post_detail.current_comment}
             />
             
           
@@ -209,11 +139,11 @@ const PostDetail = ({match}) => {
           <pack.Input  
           onChange ={(e)=>setNewComment(e.target.value)}
           placeholder={`댓글을 입력하세요.`}
-          onKeyPress={(e) => { if (e.key === "Enter") handleNewCommentBtn() }}
-          value = {comment}
+          onKeyPress={(e) => { if (e.key === "Enter") dispatch(boardActions.postDetailPageData("new_comment",{post_no,newComment,setNewComment})) }}
+          value = {newComment}
         
            />
-          <pack.InputBtn onClick = {handleNewCommentBtn}>
+          <pack.InputBtn onClick = {()=>dispatch(boardActions.postDetailPageData("new_comment",{post_no,newComment,setNewComment}))}>
             <img alt={"아이콘"} src={flyIcon}  />
           </pack.InputBtn>
         </pack.InputWrap>

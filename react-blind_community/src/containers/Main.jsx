@@ -29,47 +29,9 @@ export default function Main() {
         main:board.main,
         email: auth.login.email
     }),shallowEqual)
-    // const setCurType = useCallback((curType)=>{
-    //     dispatch(boardActions.setCurType({curType}))
-    // },[dispatch])
-
-    // const setSector = useCallback((sector)=>{
-    //     dispatch(boardActions.setSector({sector}))
-    // },[dispatch])
-
-    // const setRegion = useCallback((region)=>{
-    //     dispatch(boardActions.setRegion({region}))
-    // },[dispatch])
-
-    // const setPostList = useCallback((postList)=>{
-    //     dispatch(boardActions.setPostList({postList}))
-    // },[dispatch])
-    // const setMain = useCallback((main)=>{
-    //     dispatch(boardActions.setMain({main}))
-    // },[dispatch])
-
     useEffect(() => {
-    //  api.mainPage(curType, (data)=>{
-    //      setSector({
-    //         no:data.user_data.sector_no,
-    //         name: data.user_data.name
-    //      })
-    //      setRegion({
-    //          no:data.user_data.region_no,
-    //          bname:data.user_data.bname
-    //      })
-    //      setMain(data.post_data)
-    //      return
-    //  })
      dispatch(boardActions.mainPageData('region'))
     },[dispatch])
-    // const handleButtonClick = (curType) => {
-    //     dispatch(boardActions.mainPageData(curType))
-    //     // api.mainPage(curType, (data)=>{
-    //     //     setMain(data.post_data)
-    //     // })
-    // }
-    
     return (
         <Layout BackButton={false}>
             <Banner/>
